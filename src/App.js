@@ -61,10 +61,19 @@ class App extends Component {
   }
 
   render() {
+
+    const style = {
+      backgroundColor: 'white',
+      font: 'inherit',
+      border: '1px solid blue',
+      padding: '10px',
+      cursor: 'pointer'
+    };
+
     return (
       <div className="App">
         <h1>React App</h1>
-        <button onClick={()=>this.switchNameHandler('Rene Fernando')}>Switch name</button>
+        <button style={style} onClick={()=>this.switchNameHandler('Rene Fernando')}>Switch name</button>
         {/* usar ()=> no eventHandler não é bom para performance*/}
         <Person 
           name={this.state.persons[0].name} 
