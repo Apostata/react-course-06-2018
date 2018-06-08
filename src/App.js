@@ -60,7 +60,8 @@ class App extends Component {
 	render() {
 
 		const style = {
-			backgroundColor: 'white',
+			backgroundColor: 'green',
+			color: 'white',
 			font: 'inherit',
 			border: '1px solid blue',
 			padding: '10px',
@@ -68,6 +69,15 @@ class App extends Component {
 		};
 
 		let persons = null;
+		let classes = [];
+
+		if(this.state.persons.length <= 2){
+			classes.push('red');
+		}
+
+		if(this.state.persons.length <= 1){
+			classes.push('bold');
+		}
 
 		if(this.state.showPersons){
 			persons = (
@@ -87,11 +97,13 @@ class App extends Component {
 					}
 				</div>
 			);
+			style.backgroundColor = "red";
 		}
 
 		return (
 			<div className="App">
 				<h1>React App</h1>
+				<p className={classes.join(' ')}>Funcionando</p>
 				<button style={style} onClick={() => this.togglePersonHandler()}>Switch name</button>
 				{/* usar ()=> no eventHandler não é bom para performance*/}
 				
