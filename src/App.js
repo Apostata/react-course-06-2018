@@ -6,32 +6,33 @@ class App extends Component {
 
 	state = {
 		persons: [
-			{ name: "Rene", age: 33 },
-			{ name: "Érica", age: 29 },
-			{ name: "Helena", age: 0 }
+			{ id:'dhyuav', name: "Rene", age: 33 },
+			{ id:'fseiof', name: "Érica", age: 29 },
+			{ id:'nvbisb', name: "Helena", age: 0 }
 		],
 		otherState: "Some other state",
 		showPersons: false
 	}
 
-	switchNameHandler(newName) {
+	nameChangeHandler(event, id) {
+		const personIndex = this.state.persons.findIndex(per =>{
+			return per.id === id;
+		});
+
+		const person = {
+			...this.state.persons[personIndex]
+		};
+
+		person.name = event.target.value;
+		
+		const persons = [
+			...this.state.persons
+		];
+
+		persons[personIndex] = person;
 
 		this.setState({
-			persons: [
-				{ name: newName, age: 33 },
-				{ name: "Érica", age: 29 },
-				{ name: "Helena", age: 1 }
-			]
-		})
-	}
-
-	nameChangeHandler(event) {
-		this.setState({
-			persons: [
-				{ name: 'Rene Souza', age: 33 },
-				{ name: event.target.value, age: 29 },
-				{ name: "Helena", age: 1 }
-			]
+			persons: persons
 		})
 	}
 
@@ -39,6 +40,20 @@ class App extends Component {
 		const doesShow = this.state.showPersons;
 		this.setState({
 			showPersons: !doesShow
+		});
+	}
+
+	deletePersonHandler(personIndex){
+		//const persons = this.state.persons 			- Mutable
+		//const persons = this.state.persons.slice();	- Imutable
+		const persons = [ // - Imutable
+			...this.state.persons
+		];
+
+		persons.splice(personIndex, 1);
+
+		this.setState({
+			persons: persons
 		});
 	}
 
@@ -58,11 +73,14 @@ class App extends Component {
 			persons = (
 				<div>
 					{
-						this.state.persons.map( person =>{
+						this.state.persons.map((person, index) =>{
 							return (
 								<Person 
-									name={person.name}
-									age={person.age}
+									key = {person.id}
+									click = {()=>this.deletePersonHandler(index)}
+									name = {person.name}
+									age = {person.age}
+									changed = {(event) => this.nameChangeHandler(event, person.id)}
 								/>
 							);
 						})
