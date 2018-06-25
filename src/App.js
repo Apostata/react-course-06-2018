@@ -60,25 +60,9 @@ class App extends Component {
 
 	render() {
 
-		const style = {
-			backgroundColor: 'green',
-			color: 'white',
-			font: 'inherit',
-			border: '1px solid blue',
-			padding: '10px',
-			cursor: 'pointer'
-		};
-
-		let persons = null;
-		let classes = [];
-
-		if(this.state.persons.length <= 2){
-			classes.push(styles.red);
-		}
-
-		if(this.state.persons.length <= 1){
-			classes.push(styles.bold);
-		}
+		let persons = null,
+			classes = [],
+			btnClass = '';
 
 		if(this.state.showPersons){
 			persons = (
@@ -98,15 +82,17 @@ class App extends Component {
 					}
 				</div>
 			);
-			style.backgroundColor = "red";
 			
+			btnClass = styles.Red;
 		}
 
 		return (
 			<div className={styles.App}>
 				<h1>React App</h1>
 				<p className={classes.join(' ')}>Funcionando</p>
-				<button style={style} onClick={() => this.togglePersonHandler()}>Switch name</button>
+				<button
+				className={btnClass}
+				onClick={() => this.togglePersonHandler()}>Switch name</button>
 				{/* usar ()=> no eventHandler não é bom para performance*/}
 				
 				{persons}

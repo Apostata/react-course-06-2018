@@ -1,0 +1,50 @@
+React
+
+iniciar o projeto com o react-create-app
+    react-create-app inicia o projeto com sintaxe do Es7
+
+para configutar o webpack e outros scripts de inicialização:
+    npm run eject
+    OBS: é necessário que toda alteração no projeto esteja commitada.
+    caso contrário o npm run eject dará erro.
+
+Configurando para carregar módulos css (webpack.dev e .prod):
+    ...
+    module: {
+        strictExportPresence: true,
+        rules: [
+
+            ...
+
+            {
+            test: /\.css$/,
+                use: [
+                    require.resolve('style-loader'),
+                    {
+                        loader: require.resolve('css-loader'),
+                        options: {
+                            importLoaders: 1,
+                            modules: true,
+                            localIdentName:'[name]__[local]__[hash:base64:5]'
+                        },
+                    },
+                ]
+            },
+            ...
+        ]
+    },
+    ...
+
+    arquivo css(exemplo = App.css):
+        .App {
+            text-align: center;
+        }
+
+
+    No componente, importa-lo:
+        import styles from './App.css';
+    
+    Uso:
+        <div className={styles.App}>
+            ...
+        </div>
