@@ -7,6 +7,7 @@ para configutar o webpack e outros scripts de inicialização:
     npm run eject
     OBS: é necessário que toda alteração no projeto esteja commitada.
     caso contrário o npm run eject dará erro.
+    
 
 Configurando para carregar módulos css (webpack.dev e .prod):
     ...
@@ -48,3 +49,83 @@ Configurando para carregar módulos css (webpack.dev e .prod):
         <div className={styles.App}>
             ...
         </div>
+
+Debugando:
+    Error Boundaries: https://reactjs.org/docs/error-boundaries.html
+
+    Criar uma pasta para o componente ErrorBoundary como o noem que você desejar
+
+    import React, { Component} from 'react';
+
+    export  default class ErorrBoundary extends Component {
+        state = {
+            hasError: false,
+            errorMessage: ''
+        }
+
+        componentDidCatch = (error, info) =>{
+            this.setState({
+                hasError: true,
+                errorMessage: error
+            });
+        }
+
+        render(){
+            if(this.state.hasError){
+                return <h1>{this.state.errorMessage}</h1>
+            }
+            else{
+                return this.props.children;
+            }
+            
+        }
+    }
+
+    no aplicativo, englobar o componente que você deseja capturar o erro com o componente
+    ErrorBoundary:
+    persons = (
+        <div>
+            {
+                this.state.persons.map((person, index) =>{
+                    return (
+                        <ErrorBoundary key = {person.id}>	
+                            <Person 
+                                /*{key = {person.id}}*/
+                                click = {()=>this.deletePersonHandler(index)}
+                                name = {person.name}
+                                age = {person.age}
+                                changed = {(event) => this.nameChangeHandler(event, person.id)}
+                            />
+                        </ErrorBoundary>
+                    );
+                })
+            }
+        </div>
+    );
+
+    Como person é um compoenente de lista, sua key é passada para o errorBoundary, já que person
+    é o componente a ser capturado.
+
+Statefull e Stateless components:
+    Statefull(containers):
+        Normalmente classes com métodos
+        Acesso a leitura e mudança de estados, propriedades
+        Lifecyle hooks (extensão da classe React)
+
+    Stateless:
+        Somente função que recebem props
+        Acessa apenas leitura de propriedades,
+        Sem Lifecyle hoooks( é apenas uma função)
+    
+
+    Statefull lifecycle methods
+        methods                                 executed at
+        cosntructor()                           creation
+        compoenentWillMount()                   creation
+        compoenentWillReceiveProps()
+        compoenentWillUpdate()
+        compoenentDidUpdate()
+        compoenentDidCatch()
+        compoenentDidMount()                    creation
+        compoenentWillUnmount()
+        render()                                creation

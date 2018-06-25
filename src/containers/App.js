@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 import styles from './App.css';
-import Person from './Person/Person';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
 
@@ -61,45 +61,26 @@ class App extends Component {
 
 	render() {
 
-		let persons = null,
-			classes = [],
-			btnClass = '';
+		let listPersons = null;
 
 		if(this.state.showPersons){
-			persons = (
-				<div>
-					{
-						this.state.persons.map((person, index) =>{
-							return (
-								<ErrorBoundary key = {person.id}>	
-									<Person 
-										/*{key = {person.id}}*/
-										click = {()=>this.deletePersonHandler(index)}
-										name = {person.name}
-										age = {person.age}
-										changed = {(event) => this.nameChangeHandler(event, person.id)}
-									/>
-								</ErrorBoundary>
-							);
-						})
-					}
-				</div>
-			);
-			
-			btnClass = styles.Red;
+			listPersons = (
+				<Persons
+					persons = {this.state.persons}
+					clicked= {this.deletePersonHandler.bind(this)}
+					changed ={this.nameChangeHandler.bind(this)}
+				/>
+			);	
 		}
 
 		return (
 			<div className={styles.App}>
-				<h1>React App</h1>
-				<p className={classes.join(' ')}>Funcionando</p>
-				<button
-				className={btnClass}
-				onClick={() => this.togglePersonHandler()}>Switch name</button>
-				{/* usar ()=> no eventHandler não é bom para performance*/}
-				
-				{persons}
-				
+				<Cockpit
+					appTitle = {this.props.title}
+					showPersons = {this.state.showPersons}
+					qtdPersons = {this.state.persons.length}
+					clicked = {this.togglePersonHandler.bind(this)}/>
+				{listPersons}
 			</div>
 		);
 	}
