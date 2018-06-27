@@ -119,13 +119,70 @@ Statefull e Stateless components:
     
 
     Statefull lifecycle methods
-        methods                                 executed at
-        cosntructor()                           creation
-        compoenentWillMount()                   creation
+        methods                                 executed at - order      
+
+        cosntructor()                           creation - 1
+        compoenentWillMount()(raramente usado)  creation - 2
         compoenentWillReceiveProps()
         compoenentWillUpdate()
         compoenentDidUpdate()
         compoenentDidCatch()
-        compoenentDidMount()                    creation
+        compoenentDidMount()                    creation - 4
         compoenentWillUnmount()
-        render()                                creation
+        render()                                creation - 3
+
+    Upadte Lifecycle by Props change:
+        compoenentWillReceiveProps
+            -> Sync State to Props
+                    |
+                    v
+
+        shouldComponentUpdate(nextProps, nextState)
+            -> pode ser cancelado: return true or false
+                    |
+                    v
+
+        compoenentWillUpdate(nextProps, nextState)
+          -> Sync State to Props
+                    |
+                    v
+
+        render()
+                    |
+                    v 
+
+        unpdate child component props
+                    |
+                    v 
+
+        compoenentDidUpdate()
+            -> efetuar os side effects(ajax calls e etc...)
+    
+    Quando Transformar um Stateless componentem um Statefull?
+    só se ele receber props e você quer valida-las, como por exemplo, só atualiza
+    se uma prop específica for de certo valor ou salvar performance caso um componente
+    receba muitas props mas de fato não há mudança.
+
+
+    
+    Upadte Lifecycle by State change:
+        shouldComponentUpdate(nextProps, nextState)
+            -> pode ser cancelado: return true or false
+                    |
+                    v
+
+        compoenentWillUpdate(nextProps, nextState)
+          -> Sync State to Props
+                    |
+                    v
+
+        render()
+                    |
+                    v 
+
+        unpdate child component props
+                    |
+                    v 
+
+        compoenentDidUpdate()
+            -> efetuar os side effects(ajax calls e etc...)

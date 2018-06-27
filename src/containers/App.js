@@ -5,6 +5,10 @@ import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
+	constructor(props){
+		super(props);
+		console.log('[App.js] Inside Constructor');
+	}
 
 	state = {
 		persons: [
@@ -59,8 +63,29 @@ class App extends Component {
 		});
 	}
 
-	render() {
+	componentWillMount(){
+		console.log('[App.js] Inside ComponentWillMount');
+	}
 
+	componentDidMount(){
+		console.log('[App.js] Inside ComponentDidMount');
+	}
+
+	shouldComponentUpdate(nextProps, nextState){
+        console.log('[UPDATE App.js] Iside shouldComponentUpdate', nextProps, nextState);
+        return true;
+    }
+
+    componentWillUpdate(nextProps, nextState){
+        console.log('[UPDATE App.js] Iside componentWillUpdate', nextProps, nextState);
+    }
+
+    componentDidUpdate(){
+        console.log('[UPDATE App.js] Iside componentDidUpdate');
+    }
+
+	render() {
+		console.log('[App.js] - Iside render');
 		let listPersons = null;
 
 		if(this.state.showPersons){
