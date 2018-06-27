@@ -6,17 +6,16 @@ const cockpit = (props) =>{
     let btnClass = '';
 
     if(props.showPersons){
-        btnClass = styles.red;
+        btnClass = styles.Red;
     }
 
     if(props.qtdPersons <= 2){
-        classes.push(styles.red);
+        classes.push(styles.Red);
     }
 
     if(props.qtdPersons <= 1){
         classes.push(styles.bold);
     }
-
     return(
         <div className={styles.Cockpit}>
             <h1>{props.appTitle}</h1>

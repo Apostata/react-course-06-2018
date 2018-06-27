@@ -1,7 +1,7 @@
-import React, {Component } from 'react';
+import React, { PureComponent } from 'react';
 import Person from './Person/Person';
 
-export default class Persons extends Component{
+export default class Persons extends PureComponent{
     constructor(props){
 		super(props);
 		console.log('[Persons.js] Inside Constructor');
@@ -18,10 +18,10 @@ export default class Persons extends Component{
         console.log('[UPDATE Persons.js] Iside componentWillReceiveProps', nextProps);
     }
 
-    shouldComponentUpdate(nextProps, nextState){
-        console.log('[UPDATE Persons.js] Iside shouldComponentUpdate', nextProps, nextState);
-        return nextProps.persons !== this.props.persons;
-    }
+    // shouldComponentUpdate(nextProps, nextState){
+    //     console.log('[UPDATE Persons.js] Iside shouldComponentUpdate', nextProps, nextState);
+    //         return  nextProps.persons !== this.props.persons 
+    // }
 
     componentWillUpdate(nextProps, nextState){
         console.log('[UPDATE Persons.js] Iside componentWillUpdate', nextProps, nextState);

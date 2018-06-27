@@ -186,3 +186,17 @@ Statefull e Stateless components:
 
         compoenentDidUpdate()
             -> efetuar os side effects(ajax calls e etc...)
+
+    React PureComponents:
+        import React, { PureComponent } from 'react';
+
+        ...
+        class App extends PureComponent {
+            ...
+
+        Implementa automáticamente uma validação de se realmente o state mudou
+        para que o a função render seja cahmada.
+
+        Substitui a função: shouldComponentUpdate(nextProps, nextState) se
+        valida apenas o que foi alterado para otimização.
+         
