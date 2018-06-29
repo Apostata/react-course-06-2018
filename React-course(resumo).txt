@@ -222,7 +222,7 @@ Statefull e Stateless components:
                 <input type="text" onChange={this.props.changed} value={this.props.name}/>
             ];
         
-        2 Criando um High order Component ou fragments: 
+        2 Criando um High order Component(HOC) ou fragments: 
             Serve para quando voce não quer adicionar uma nova div ao HTML 
             porém precisa emglobar multiplos elementos.
 
@@ -252,3 +252,38 @@ Statefull e Stateless components:
             ); 
 
             Mantendo a mesma função, sem a necessidade de criar um arquivo.
+        
+    High Order Components(HOC):
+        High order components pra retornar componentes
+        com classes CSS e stateFull compoenets:
+
+        criar um arquivo que retorna uma função a ser englobada no componenete:
+        exemplo: withClass.js
+
+        Componente Stateless:
+            import React from 'react';
+
+            const withClass = (WrappedComponent, className) =>{
+                return (props) => ( 
+                    <div className = {className}>
+                        <WrappedComponent {...props} />
+                    </div>
+                )
+            }
+            export default withClass;
+
+        Componente Statefull:
+            import React, { Component } from 'react';
+
+            const withClass = (WrappedComponent, className) =>{
+                return class extends Component{ //class on Demand
+                    render(){
+                        return( 
+                            <div className = {className}>
+                                <WrappedComponent {...this.props} />
+                            </div>
+                        );
+                    }
+                }
+            }
+            export default withClass;
