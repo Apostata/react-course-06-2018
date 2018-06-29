@@ -439,52 +439,60 @@ Statefull e Stateless components:
                 }
                 export default withClass;
 
-        Contex APi (React 16.3+):
-            Usado para transmissão de dados que são considerados globais
-            exemplo:
-                import React from 'react';
-                export const AuthContext = React.createContext(false);
+    Contex APi (React 16.3+):
+        Usado para transmissão de dados que são considerados globais
+        exemplo:
+            import React from 'react';
+            export const AuthContext = React.createContext(false);
 
-                class App extends PureComponent {
-                    ...
+            class App extends PureComponent {
+                ...
 
-                    render() {
-                        
-                        return (
-                            <Fragment>
-                               ...
-                                
-                                <AuthContext.Provider value={this.state.authenticated}>
-                                    {listPersons}
-                                </AuthContext.Provider>
-                            </Fragment>
-                        );
-                    }
-                }
-
-                No componente filho, não importanto o nível:
-
-                import { AuthContext } from '../../containers/App';
-
-                class Person extends Component {
-
-                   ...
-                    render(){
-                        return (
-                            <Fragment>
-                                <AuthContext.Consumer>
-                                    {auth => auth ? <p>I'm authenticated</p> : null}
-                                </AuthContext.Consumer>  
+                render() {
+                    
+                    return (
+                        <Fragment>
                             ...
-                        )
-                    }
-        Novos Metodos do ciclo de vida do React:
-            static getDerivedStateFromProps(nextProps, prevState):
-                atualiza o estado de acordo com as propriedades(props)
-                retornando o novo estado.
-                É executado antes do metodo render e componentDidMount;
-            
-            getSnapshotBeforeUpdate()
-                usado antes de atualizar o DOM, para guardar alguma informção
-                do DOM antigo que pode ser reutilizada
-                É executado antes do metodo componentDidUpdate;
+                            
+                            <AuthContext.Provider value={this.state.authenticated}>
+                                {listPersons}
+                            </AuthContext.Provider>
+                        </Fragment>
+                    );
+                }
+            }
+
+            No componente filho, não importanto o nível:
+
+            import { AuthContext } from '../../containers/App';
+
+            class Person extends Component {
+
+                ...
+                render(){
+                    return (
+                        <Fragment>
+                            <AuthContext.Consumer>
+                                {auth => auth ? <p>I'm authenticated</p> : null}
+                            </AuthContext.Consumer>  
+                        ...
+                    )
+                }
+    Novos Metodos do ciclo de vida do React:
+        static getDerivedStateFromProps(nextProps, prevState):
+            atualiza o estado de acordo com as propriedades(props)
+            retornando o novo estado.
+            É executado antes do metodo render e componentDidMount;
+        
+        getSnapshotBeforeUpdate()
+            usado antes de atualizar o DOM, para guardar alguma informção
+            do DOM antigo que pode ser reutilizada
+            É executado antes do metodo componentDidUpdate;
+    
+    Recursos e itens Uteis:
+        State & Lifecycle: https://reactjs.org/docs/state-and-lifecycle.html
+        PropTypes: https://reactjs.org/docs/typechecking-with-proptypes.html
+        Higher Order Components: https://reactjs.org/docs/higher-order-components.html
+        Refs: https://reactjs.org/docs/refs-and-the-dom.html
+        
+    
