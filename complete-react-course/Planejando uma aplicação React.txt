@@ -1,0 +1,4 @@
+Passos:
+    1 - Hierarquia de componentes e estrutura
+    2 - Estado da aplicação (dados)
+    3 componentes cs containers
