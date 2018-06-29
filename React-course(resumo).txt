@@ -329,3 +329,22 @@ Statefull e Stateless components:
                 toggleClicked: prevState.toggleClicked + 1
             }
         });
+    
+    Validação de tipo das propriedades dos componentes:
+        npm install --save prop-types
+
+        no componente Person.js:
+        
+            import PropTypes from 'prop-types';
+            import PropTypes from 'prop-types';
+
+            class Person extends Component {
+               ...
+            }
+
+            Person.propTypes = {
+                click: PropTypes.func, //click precisa ser function
+                name: PropTypes.string, //name precisa ser string
+                age: PropTypes.number, //number precisa ser numérico
+                changed: PropTypes.func //changed precisa ser function
+            };

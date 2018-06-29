@@ -3,9 +3,7 @@ import React, { PureComponent, Fragment } from 'react';
 import styles from './App.css';
 import Persons from '../Persons/Persons';
 import Cockpit from '../Cockpit/Cockpit';
-//import WithClass from '../hoc/WithClass';
 import withClass from '../hoc/withClass';
-import { ENGINE_METHOD_CIPHERS } from 'constants';
 
 class App extends PureComponent {
 
@@ -13,7 +11,7 @@ class App extends PureComponent {
 		persons: [
 			{ id:'dhyuav', name: "Rene", age: 33 },
 			{ id:'fseiof', name: "Érica", age: 29 },
-			{ id:'nvbisb', name: "Helena", age: 0 }
+			{ id:'nvbisb', name: "Helena", age: 1 }
 		],
 		otherState: "Some other state",
 		showPersons: false,
@@ -44,6 +42,7 @@ class App extends PureComponent {
 
 	togglePersonHandler(){
 		const doesShow = this.state.showPersons;
+
 		this.setState((prevState, props) =>{
 			return {
 				showPersons: !doesShow,
@@ -92,5 +91,4 @@ class App extends PureComponent {
 		);
 	}
 }
-
 export default withClass(App, styles.App);
