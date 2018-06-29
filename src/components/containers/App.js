@@ -5,12 +5,9 @@ import Persons from '../Persons/Persons';
 import Cockpit from '../Cockpit/Cockpit';
 //import WithClass from '../hoc/WithClass';
 import withClass from '../hoc/withClass';
+import { ENGINE_METHOD_CIPHERS } from 'constants';
 
 class App extends PureComponent {
-	constructor(props){
-		super(props);
-		console.log('[App.js] Inside Constructor');
-	}
 
 	state = {
 		persons: [
@@ -19,7 +16,8 @@ class App extends PureComponent {
 			{ id:'nvbisb', name: "Helena", age: 0 }
 		],
 		otherState: "Some other state",
-		showPersons: false
+		showPersons: false,
+		toggleClicked: 0
 	}
 
 	nameChangeHandler(event, id) {
@@ -46,8 +44,11 @@ class App extends PureComponent {
 
 	togglePersonHandler(){
 		const doesShow = this.state.showPersons;
-		this.setState({
-			showPersons: !doesShow
+		this.setState((prevState, props) =>{
+			return {
+				showPersons: !doesShow,
+				toggleClicked: prevState.toggleClicked + 1
+			};
 		});
 	}
 
@@ -65,30 +66,7 @@ class App extends PureComponent {
 		});
 	}
 
-	componentWillMount(){
-		console.log('[App.js] Inside ComponentWillMount');
-	}
-
-	componentDidMount(){
-		console.log('[App.js] Inside ComponentDidMount');
-	}
-
-	// shouldComponentUpdate(nextProps, nextState){
-    //     console.log('[UPDATE App.js] Iside shouldComponentUpdate', nextProps, nextState);
-	// 		return nextState.persons !== this.state.persons ||
-	// 			   nextState.showPersons !== this.state.showPersons;
-    // }
-
-    componentWillUpdate(nextProps, nextState){
-        console.log('[UPDATE App.js] Iside componentWillUpdate', nextProps, nextState);
-    }
-
-    componentDidUpdate(){
-        console.log('[UPDATE App.js] Iside componentDidUpdate');
-    }
-
 	render() {
-		console.log('[App.js] - Iside render');
 		let listPersons = null;
 
 		if(this.state.showPersons){

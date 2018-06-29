@@ -287,3 +287,45 @@ Statefull e Stateless components:
                 }
             }
             export default withClass;
+
+        exemplo de uso:
+            
+		import React, { PureComponent, Fragment } from 'react';
+        ...
+        import withClass from '../hoc/withClass';
+
+        class App extends PureComponent {
+            ...
+
+            render() {
+                return (
+                    <Fragment>
+                        <button onClick={()=>{this.setState({showPersons:true})}}>Show Persons</button>
+                        <Cockpit
+                            appTitle = {this.props.title}
+                            showPersons = {this.state.showPersons}
+                            qtdPersons = {this.state.persons.length}
+                            clicked = {this.togglePersonHandler.bind(this)}/>
+                        {listPersons}
+                    </Fragment>
+                );
+            }
+        }
+
+        export default withClass(App, styles.App);
+    
+    O jeito certo de usar o metodo setState(exemplo):
+        É usar p prevState caso deseje modificar ou atualizar o estado. Previnindo assim 
+        que o haja problemas caso o estado seja mudado ao mesmo tempo em outra parte da
+        aplicação.
+
+        ...
+
+        const doesShow = this.state.showPersons;
+
+        this.setState((prevState, props)=>{
+            return {
+                showPersons: !doesShow,
+                toggleClicked: prevState.toggleClicked + 1
+            }
+        });
