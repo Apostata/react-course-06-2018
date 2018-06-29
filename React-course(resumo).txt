@@ -199,4 +199,56 @@ Statefull e Stateless components:
 
         Substitui a função: shouldComponentUpdate(nextProps, nextState) se
         valida apenas o que foi alterado para otimização.
-         
+    
+    React render() function retornando elementos multiplos:
+        O react aceita apenas um elemento unico de retorno na função render():
+        
+        return (
+            <div>
+                <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>
+                <p>{this.props.children}</p>
+                <input type="text" onChange={this.props.changed} value={this.props.name}/>
+            </div>
+        );
+
+        elementos multiplos precisam estar englobados em um unico elemento, como é o caso acima.
+
+        existe porém, 2 alternativas a partir do React 16:
+
+        1 - retornando um Array:
+            return [
+                <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>,
+                <p>{this.props.children}</p>,
+                <input type="text" onChange={this.props.changed} value={this.props.name}/>
+            ];
+        
+        2 Criando um High order Component ou fragments: 
+            Serve para quando voce não quer adicionar uma nova div ao HTML 
+            porém precisa emglobar multiplos elementos.
+
+            Aux.js:
+
+                const aux = (props) => props.children;
+                export default aux;
+
+            import Aux from '..path to Aux component';
+            ...
+            return(
+                <Aux>
+                    <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>,
+                    <p>{this.props.children}</p>,
+                    <input type="text" onChange={this.props.changed} value={this.props.name}/>
+                </Aux>
+            );
+
+            NOTA: no React 16.2 já existe um elemento Hoc nativo: transformando o código anterior em:
+            ...
+            return(
+                <React.fragment>
+                    <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>,
+                    <p>{this.props.children}</p>,
+                    <input type="text" onChange={this.props.changed} value={this.props.name}/>
+                </React.fragment>
+            ); 
+
+            Mantendo a mesma função, sem a necessidade de criar um arquivo.

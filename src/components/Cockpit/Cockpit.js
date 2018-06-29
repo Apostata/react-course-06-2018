@@ -1,12 +1,15 @@
-import React from 'react';
+import React, {Fragment} from 'react';
+
+//import Aux from '../hoc/Auxiliary';
+
 import styles from './Cockpit.css';
 
 const cockpit = (props) =>{
     const classes = []
-    let btnClass = '';
+    let btnClass = styles.Button;
 
     if(props.showPersons){
-        btnClass = styles.Red;
+        btnClass = [styles.Button, styles.Red].join(' ');
     }
 
     if(props.qtdPersons <= 2){
@@ -16,8 +19,8 @@ const cockpit = (props) =>{
     if(props.qtdPersons <= 1){
         classes.push(styles.bold);
     }
-    return(
-        <div className={styles.Cockpit}>
+    return (
+        <Fragment>
             <h1>{props.appTitle}</h1>
             <p className={classes.join(' ')}>Funcionando</p>
             <button
@@ -25,8 +28,8 @@ const cockpit = (props) =>{
                 onClick={props.clicked}
             >Switch name
             </button>
-        </div>
-    );
+        </Fragment>
+    )
 };
 
 export default cockpit;
