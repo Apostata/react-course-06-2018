@@ -119,17 +119,19 @@ Statefull e Stateless components:
     
 
     Statefull lifecycle methods
-        methods                                 executed at - order      
+        methods                                                     executed at - order      
 
-        cosntructor()                           creation - 1
-        compoenentWillMount()(raramente usado)  creation - 2
-        compoenentWillReceiveProps()
-        compoenentWillUpdate()
+        cosntructor()                                               creation - 1
+        compoenentWillMount()(Não recomendado react 16.3+)          creation - 2
+        compoenentWillReceiveProps()(Não recomendado react 16.3+)
+        compoenentWillUpdate()(Não recomendado react 16.3+)
         compoenentDidUpdate()
         compoenentDidCatch()
-        compoenentDidMount()                    creation - 4
+        compoenentDidMount()                                        creation - 4
         compoenentWillUnmount()
-        render()                                creation - 3
+        render()                                                    creation - 3
+        getDerivedStateFromProps(nextProps, prevState)(Novo 16.3+)
+
 
     Upadte Lifecycle by Props change:
         compoenentWillReceiveProps
@@ -418,21 +420,71 @@ Statefull e Stateless components:
                     });
                 }  
         Retornando referência para componente pai em HOC:
-        alterar o HOC withClass desta maneira:
-        
-            const withClass = (WrappedComponent, className) =>{
-                const WithClass = class extends Component{ //class on Demand
-                    render(){
-                        return( 
-                            <div className = {className}>
-                                <WrappedComponent ref={this.props.childRefs} {...this.props} />
-                            </div>
+            alterar o HOC withClass desta maneira:
+            
+                const withClass = (WrappedComponent, className) =>{
+                    const WithClass = class extends Component{ //class on Demand
+                        render(){
+                            return( 
+                                <div className = {className}>
+                                    <WrappedComponent ref={this.props.childRefs} {...this.props} />
+                                </div>
+                            );
+                        }
+                    }
+                    
+                    return React.forwardRef((props, ref)=>{
+                        return <WithClass {...props} childRefs={ref} />
+                    });
+                }
+                export default withClass;
+
+        Contex APi (React 16.3+):
+            Usado para transmissão de dados que são considerados globais
+            exemplo:
+                import React from 'react';
+                export const AuthContext = React.createContext(false);
+
+                class App extends PureComponent {
+                    ...
+
+                    render() {
+                        
+                        return (
+                            <Fragment>
+                               ...
+                                
+                                <AuthContext.Provider value={this.state.authenticated}>
+                                    {listPersons}
+                                </AuthContext.Provider>
+                            </Fragment>
                         );
                     }
                 }
-                
-                return React.forwardRef((props, ref)=>{
-                    return <WithClass {...props} childRefs={ref} />
-                });
-            }
-            export default withClass;
+
+                No componente filho, não importanto o nível:
+
+                import { AuthContext } from '../../containers/App';
+
+                class Person extends Component {
+
+                   ...
+                    render(){
+                        return (
+                            <Fragment>
+                                <AuthContext.Consumer>
+                                    {auth => auth ? <p>I'm authenticated</p> : null}
+                                </AuthContext.Consumer>  
+                            ...
+                        )
+                    }
+        Novos Metodos do ciclo de vida do React:
+            static getDerivedStateFromProps(nextProps, prevState):
+                atualiza o estado de acordo com as propriedades(props)
+                retornando o novo estado.
+                É executado antes do metodo render e componentDidMount;
+            
+            getSnapshotBeforeUpdate()
+                usado antes de atualizar o DOM, para guardar alguma informção
+                do DOM antigo que pode ser reutilizada
+                É executado antes do metodo componentDidUpdate;
