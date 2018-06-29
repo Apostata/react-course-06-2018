@@ -334,7 +334,7 @@ Statefull e Stateless components:
         npm install --save prop-types
 
         no componente Person.js:
-        
+
             import PropTypes from 'prop-types';
             import PropTypes from 'prop-types';
 
@@ -348,3 +348,91 @@ Statefull e Stateless components:
                 age: PropTypes.number, //number precisa ser numérico
                 changed: PropTypes.func //changed precisa ser function
             };
+
+        link dos tipos disponíveis para validação:
+        https://reactjs.org/docs/typechecking-with-proptypes.html
+    
+    Refs
+        é uma maneira de capturar uma função executada no componente filho,
+        para ser tratado pelo componente pai,
+        quando usar:
+            gerir focus, seleção de texto, ou media playback.
+            acionando animações.
+            Integrar com bibliotecas DOM de terceiros.
+
+        no component filho, definir a referência:
+            exemplo: Person.js
+
+            React.createRef() => React 16.3 +
+
+            ES7 sintaxe:
+                class Person extends Component {
+
+                    inputElem = React.createRef(); 
+                    ...
+
+            ES6 sintaxe:
+                class Person extends Component {
+
+                    constructor(props){
+                        super(props);
+                        this.inputElem = React.createRef();
+                    }
+                    
+                    ...
+
+
+                    funcaoDoFilho(){
+                        this.inputElem.current.focus();
+                    }
+            
+                    render(){
+                        return (
+                            <Fragment>
+                            ...
+                                <input 
+                                    ref={this.inputElem}
+                                    type="text" />
+                            </Fragment>
+                        );
+                    }
+
+        no component pai
+             class Persons extends Component {
+
+                lastPersonRef = React.createRef()
+                    ...
+                
+                componentDidMount(){
+                    this.lastPersonRef.current.funcaoDoFilho();
+                }
+    
+                render(){
+                    return this.props.persons.map((person, index) =>{
+                        
+                        return <Person 
+                            key = {person.id}
+                            position = {index}
+                            ...
+                            ref={this.lastPersonRef} />
+                    });
+                }  
+        Retornando referência para componente pai em HOC:
+        alterar o HOC withClass desta maneira:
+        
+            const withClass = (WrappedComponent, className) =>{
+                const WithClass = class extends Component{ //class on Demand
+                    render(){
+                        return( 
+                            <div className = {className}>
+                                <WrappedComponent ref={this.props.childRefs} {...this.props} />
+                            </div>
+                        );
+                    }
+                }
+                
+                return React.forwardRef((props, ref)=>{
+                    return <WithClass {...props} childRefs={ref} />
+                });
+            }
+            export default withClass;
