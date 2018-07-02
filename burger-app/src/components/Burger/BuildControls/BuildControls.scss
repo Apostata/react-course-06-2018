@@ -1,0 +1,11 @@
+@import '../../../sass/base';
+
+.BuildControls{
+    width: 100%;
+    background-color: map-get($cores, 'laranja-claro');
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    box-shadow: 0 2px 1px map-get($cores, 'cinza-claro');
+    padding: 10px 0;
+}

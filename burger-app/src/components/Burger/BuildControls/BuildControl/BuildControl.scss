@@ -1,0 +1,60 @@
+@import '../../../../sass/base';
+
+.BuildControl{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+
+    button{
+        display: block;
+        font:inherit;
+        padding: 5px;
+        margin: 0 5px;
+        width: 80px;
+        border: 1px solid map-get($cores, 'marrom-claro');
+        cursor: pointer;
+        outline: none;
+
+        &:disabled {
+            background-color: map-get($cores, 'pastel-claro');
+            border: 1px solid map-get($cores, 'pastel-escuro');
+            color: map-get($cores, 'cinza-claro');
+            cursor: default;
+        }
+        
+        &:hover{
+            &:disabled {
+                background-color: map-get($cores, 'pastel-claro');
+                color: map-get($cores, 'cinza-claro');
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    .Less {  
+        background-color: map-get($cores, 'laranja-claro');
+        color: map-get($cores, 'branco');
+
+        &:hover, &:active{
+            background-color: lighthen(map-get($cores, 'laranja-claro'), 10%);
+            color: map-get($cores, 'branco');
+        }
+    }
+    
+    .More {
+        background-color: map-get($cores, 'marrom-medio');
+        color: map-get($cores, 'branco');
+
+        &:hover, &:active{
+            background-color: lighthen(map-get($cores, 'marrom-medio'), 10%);
+            color: map-get($cores, 'branco');
+        }
+    }
+}
+
+.Label {
+    padding: 10px;
+    font-weight: bold;
+    width: 80px;
+}
