@@ -5,6 +5,7 @@ import controlers from '../../../json/buildControls.json';
 
 const buildControls = (props) =>(
     <div className={styles.BuildControls}>
+        <p>Preço final : {props.totalPrice.toFixed(2)}</p>
         {
             controlers.map((controle)=>(
                 <BuildControl
@@ -17,6 +18,10 @@ const buildControls = (props) =>(
                 />
             ))
         }
+        <button
+            className={styles.OrderButton}
+            disabled={!props.purchasable}
+        >PEDIR</button>
     </div>
 );
 export default buildControls;

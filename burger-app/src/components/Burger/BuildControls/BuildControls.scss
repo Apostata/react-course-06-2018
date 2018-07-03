@@ -9,3 +9,32 @@
     box-shadow: 0 2px 1px map-get($cores, 'cinza-claro');
     padding: 10px 0;
 }
+
+.OrderButton {
+    background-color: map-get($cores, 'amarelo-claro');
+    outline: none;
+    cursor: pointer;
+    border: 1px solid map-get($cores, 'marrom-medio');
+    color: map-get($cores, 'marrom-medio');
+    font-family: inherit;
+    font-size: 1.2em;
+    padding: 15px 30px;
+    box-shadow: 2px 2px 2px map-get($cores, 'marrom-medio');
+
+    &:hover, &:active{
+        background-color: map-get($cores, 'verde-claro');
+        border: 1px solid map-get($cores, 'marrom-medio');
+        color: map-get($cores, 'marrom-medio');
+    }
+
+    &:disabled {
+        background-color: map-get($cores, 'cinza-claro');
+        cursor: not-allowed;
+        border: 1px solid map-get($cores, 'cinza-claro');
+        color: map-get($cores, 'cinza-medio');
+    }
+
+    &:not(:disabled) {
+        animation: enable 0.3s linear;
+    }
+}

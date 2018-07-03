@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
+import Modal from '../../components/UI/Modal/Modal';
 import INGREDIENT_PRICES from '../../json/ingredient_prices.json';
 
 class BurgerBuilder extends Component{
@@ -12,7 +13,26 @@ class BurgerBuilder extends Component{
             cheese: 0,
             meat: 0
         },
-        totalPrice: 10
+        totalPrice: 10,
+        purchasable: false
+    }
+
+    updatePurchaceState(updatedIngredients){
+        const ingredients = {
+            ...updatedIngredients
+        }
+
+        const sum = Object.keys(ingredients)
+            .map(igKey =>{
+                return ingredients[igKey]
+            })
+            .reduce((sum, ingredient)=>{
+                return sum + ingredient;
+            },0);
+        
+            this.setState({
+                purchasable: sum > 0
+            })
     }
 
     addIngredientHandler(type){
@@ -30,7 +50,7 @@ class BurgerBuilder extends Component{
         const newPrice = oldTotalPrice + addedPrice;
 
         this.setState({totalPrice:newPrice, ingredients: updatedIngredients});
-        
+        this.updatePurchaceState(updatedIngredients);
     }
 
     removeIngredientHandler(type){
@@ -53,6 +73,7 @@ class BurgerBuilder extends Component{
         const newPrice = oldTotalPrice - deducedPrice;
 
         this.setState({totalPrice:newPrice, ingredients: updatedIngredients});
+        this.updatePurchaceState(updatedIngredients);
     }
 
     render(){
@@ -71,7 +92,10 @@ class BurgerBuilder extends Component{
                     addIngredient={this.addIngredientHandler.bind(this)}
                     removeIngredient={this.removeIngredientHandler.bind(this)}
                     disabled={disableInfo}
+                    totalPrice ={this.state.totalPrice}
+                    purchasable = {this.state.purchasable}
                 />
+                <Modal />
             </Fragment>
         );
     }
