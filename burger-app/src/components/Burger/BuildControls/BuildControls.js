@@ -5,7 +5,7 @@ import controlers from '../../../json/buildControls.json';
 
 const buildControls = (props) =>(
     <div className={styles.BuildControls}>
-        <p>Preço final : {props.totalPrice.toFixed(2)}</p>
+        <p>Preço final : R$ {props.totalPrice.toFixed(2)}</p>
         {
             controlers.map((controle)=>(
                 <BuildControl
@@ -21,6 +21,7 @@ const buildControls = (props) =>(
         <button
             className={styles.OrderButton}
             disabled={!props.purchasable}
+            onClick={props.orded}
         >PEDIR</button>
     </div>
 );

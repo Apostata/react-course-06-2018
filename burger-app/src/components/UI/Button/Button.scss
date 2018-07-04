@@ -1,0 +1,26 @@
+@import '../../../sass/base';
+
+.Button {
+    background-color: transparent;
+    border: none;
+    color: map-get($cores, 'branco');
+    outline: none;
+    cursor: pointer;
+    font: inherit;
+    padding: 10px;
+    margin: 10px;
+    font-weight: bold;
+
+    &:first-of-type {
+        margin-left: 0;
+        padding-left: 0;
+    }
+
+    &.Danger{
+        color: map-get($cores, 'vermelho-escuro');
+    }
+
+    &.Success{
+        color: map-get($cores, 'verde-escuro');
+    }
+}

@@ -2,6 +2,8 @@ import React, {Component, Fragment} from 'react';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+
 import INGREDIENT_PRICES from '../../json/ingredient_prices.json';
 
 class BurgerBuilder extends Component{
@@ -14,7 +16,8 @@ class BurgerBuilder extends Component{
             meat: 0
         },
         totalPrice: 10,
-        purchasable: false
+        purchasable: false,
+        purchasing:false
     }
 
     updatePurchaceState(updatedIngredients){
@@ -76,6 +79,14 @@ class BurgerBuilder extends Component{
         this.updatePurchaceState(updatedIngredients);
     }
 
+    purchaseHandler(){
+        this.setState({purchasing:!this.state.purchasing});
+    }
+
+    purchaseContinueHandler(){
+        alert('Compra Realizada!');
+    }
+
     render(){
         const disableInfo = {
             ...this.state.ingredients
@@ -94,8 +105,17 @@ class BurgerBuilder extends Component{
                     disabled={disableInfo}
                     totalPrice ={this.state.totalPrice}
                     purchasable = {this.state.purchasable}
+                    orded={this.purchaseHandler.bind(this)}
                 />
-                <Modal />
+                
+                <Modal show={this.state.purchasing} backdropClick={this.purchaseHandler.bind(this)}>
+                    <OrderSummary
+                        ingredients={this.state.ingredients}
+                        cancelClick={this.purchaseHandler.bind(this)}
+                        continueClick={this.purchaseContinueHandler.bind(this)}
+                        totalPrice ={this.state.totalPrice}
+                    />
+                </Modal>
             </Fragment>
         );
     }

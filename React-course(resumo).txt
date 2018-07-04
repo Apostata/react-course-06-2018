@@ -106,6 +106,12 @@ Debugando:
     Como person é um compoenente de lista, sua key é passada para o errorBoundary, já que person
     é o componente a ser capturado.
 
+    NOTA: props.children é um component, ou connteúdo filho que esta sendo passado:
+    <Container>
+        <Filho></Filho>
+    </Container>
+    neste caso Filho é o props.children de Container
+
 Statefull e Stateless components:
     Statefull(containers):
         Normalmente classes com métodos
