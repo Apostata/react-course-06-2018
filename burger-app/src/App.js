@@ -7,7 +7,8 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Layout>
+        <Layout>{/*compoenente de certa forma desnecessário*/}
+          
           <BurgerBuilder />
         </Layout>
       </div>
