@@ -50,6 +50,41 @@ Configurando para carregar módulos css (webpack.dev e .prod):
             ...
         </div>
 
+    Escopo de módulos css:
+
+        exemplo:
+        no arquivo Logo.css (que é importado junto ao componente Logo):
+            .Logo{
+                padding: 8px;
+                height: 80%;
+                box-sizing: border-box;
+                border-radius: 5px;
+            }
+
+        porém a altura deve ser modificada quando o logo estiver
+        dentro do Sidedrawe.
+        
+        no arquivo sidedrawer.css:
+            .Sidedrawer .Logo{
+                height: 11%;
+            }
+
+        então é necessário importar o componente logo no componente sidedrawer
+
+        import React from 'react';
+        import Logo from '..Logo path';
+        import styles from './Sidedrawer.css';
+
+        const sidedrawer = (props) =>{
+            return (
+                <div className={styles.Sidedrawer}>
+                    <div className={styles.Logo}>
+                        <Logo />
+                    </div>
+                </div>
+            );
+        }
+
 Debugando:
     Error Boundaries: https://reactjs.org/docs/error-boundaries.html
 

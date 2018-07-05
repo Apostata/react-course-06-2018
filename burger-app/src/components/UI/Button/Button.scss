@@ -23,4 +23,26 @@
     &.Success{
         color: map-get($cores, 'verde-escuro');
     }
+
+    &.DrawerToggle {
+        width: 40px;
+        height: 100%;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        padding: 10px 0;
+        box-sizing: border-box;
+        justify-content: space-around;
+        cursor: pointer;
+
+        div {
+            width: 90%;
+            height: 3px;
+            background-color: map-get($cores, 'branco');
+        }
+
+        @media (min-width: 500px) {
+            display: none;
+        }
+    }
 }
