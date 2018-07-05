@@ -148,7 +148,7 @@ Debugando:
     neste caso Filho é o props.children de Container
 
 Statefull e Stateless components:
-    Statefull(containers):
+    Statefull:
         Normalmente classes com métodos
         Acesso a leitura e mudança de estados, propriedades
         Lifecyle hooks (extensão da classe React)
@@ -204,7 +204,9 @@ Statefull e Stateless components:
     Quando Transformar um Stateless componentem um Statefull?
     só se ele receber props e você quer valida-las, como por exemplo, só atualiza
     se uma prop específica for de certo valor ou salvar performance caso um componente
-    receba muitas props mas de fato não há mudança.
+    receba muitas props mas de fato não há mudança ou quando ele está alterando áreas não
+    visíveis, disperdiçãndo performance, neste caso, deve-se atualiza-lo para statefull e
+    validar se deve se atualizado quando ocorrer uma mudação de estado (shouldComponentUpdate).
 
 
     
@@ -465,7 +467,7 @@ Statefull e Stateless components:
                             ref={this.lastPersonRef} />
                     });
                 }  
-                
+
         Retornando referência para componente pai em HOC:
             alterar o HOC withClass desta maneira:
                 import React, { Component, forwardRef } from 'react';
