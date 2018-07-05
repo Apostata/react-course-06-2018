@@ -242,6 +242,11 @@ Statefull e Stateless components:
 
         Substitui a função: shouldComponentUpdate(nextProps, nextState) se
         valida apenas o que foi alterado para otimização.
+
+     Performance:
+            PureComponents são usados em Containers enquanto que shouldComponentUpdate()
+            deve ser usado em outros componentes que não gerenciam estado porém atualizam
+            props desnecessária mente, como por exemplo atualizar um modal sem mostra-lo.
     
     React render() function retornando elementos multiplos:
         O react aceita apenas um elemento unico de retorno na função render():
@@ -287,11 +292,11 @@ Statefull e Stateless components:
             NOTA: no React 16.2 já existe um elemento Hoc nativo: transformando o código anterior em:
             ...
             return(
-                <React.fragment>
+                <Fragment>
                     <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>,
                     <p>{this.props.children}</p>,
                     <input type="text" onChange={this.props.changed} value={this.props.name}/>
-                </React.fragment>
+                </Fragment>
             ); 
 
             Mantendo a mesma função, sem a necessidade de criar um arquivo.
@@ -331,31 +336,31 @@ Statefull e Stateless components:
             }
             export default withClass;
 
-        exemplo de uso:
-            
-		import React, { PureComponent, Fragment } from 'react';
-        ...
-        import withClass from '../hoc/withClass';
-
-        class App extends PureComponent {
+            exemplo de uso:
+                
+            import React, { PureComponent, Fragment } from 'react';
             ...
+            import withClass from '../hoc/withClass';
 
-            render() {
-                return (
-                    <Fragment>
-                        <button onClick={()=>{this.setState({showPersons:true})}}>Show Persons</button>
-                        <Cockpit
-                            appTitle = {this.props.title}
-                            showPersons = {this.state.showPersons}
-                            qtdPersons = {this.state.persons.length}
-                            clicked = {this.togglePersonHandler.bind(this)}/>
-                        {listPersons}
-                    </Fragment>
-                );
+            class App extends PureComponent {
+                ...
+
+                render() {
+                    return (
+                        <Fragment>
+                            <button onClick={()=>{this.setState({showPersons:true})}}>Show Persons</button>
+                            <Cockpit
+                                appTitle = {this.props.title}
+                                showPersons = {this.state.showPersons}
+                                qtdPersons = {this.state.persons.length}
+                                clicked = {this.togglePersonHandler.bind(this)}/>
+                            {listPersons}
+                        </Fragment>
+                    );
+                }
             }
-        }
 
-        export default withClass(App, styles.App);
+            export default withClass(App, styles.App);
     
     O jeito certo de usar o metodo setState(exemplo):
         É usar p prevState caso deseje modificar ou atualizar o estado. Previnindo assim 
@@ -376,9 +381,8 @@ Statefull e Stateless components:
     Validação de tipo das propriedades dos componentes:
         npm install --save prop-types
 
-        no componente Person.js:
+        no componente Person.js (precisa ser um statefull component, ou seja, um componente criado com class):
 
-            import PropTypes from 'prop-types';
             import PropTypes from 'prop-types';
 
             class Person extends Component {
@@ -395,6 +399,7 @@ Statefull e Stateless components:
         link dos tipos disponíveis para validação:
         https://reactjs.org/docs/typechecking-with-proptypes.html
     
+
     Refs
         é uma maneira de capturar uma função executada no componente filho,
         para ser tratado pelo componente pai,
@@ -460,9 +465,11 @@ Statefull e Stateless components:
                             ref={this.lastPersonRef} />
                     });
                 }  
+                
         Retornando referência para componente pai em HOC:
             alterar o HOC withClass desta maneira:
-            
+                import React, { Component, forwardRef } from 'react';
+
                 const withClass = (WrappedComponent, className) =>{
                     const WithClass = class extends Component{ //class on Demand
                         render(){
@@ -474,11 +481,12 @@ Statefull e Stateless components:
                         }
                     }
                     
-                    return React.forwardRef((props, ref)=>{
+                    return forwardRef((props, ref)=>{
                         return <WithClass {...props} childRefs={ref} />
                     });
                 }
                 export default withClass;
+
 
     Contex APi (React 16.3+):
         Usado para transmissão de dados que são considerados globais
@@ -519,6 +527,7 @@ Statefull e Stateless components:
                         ...
                     )
                 }
+    
     Novos Metodos do ciclo de vida do React:
         static getDerivedStateFromProps(nextProps, prevState):
             atualiza o estado de acordo com as propriedades(props)

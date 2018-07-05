@@ -1,21 +1,27 @@
-import React, {Fragment} from 'react';
+import React, {Component, Fragment} from 'react';
 import styles from './Modal.scss';
 import Backdrop from '../Backdrop/Backdrop';
 
-const modal = (props) => {
-    let classes = [styles.Modal];
-    if(props.show) classes.push(styles.show);
-    classes.concat();
+class Modal extends Component {
+    shouldComponentUpdate(nexProps, nextState){
+        return nexProps.show !== this.props.show;
+    }
+    
+    render(){
+        let classes = [styles.Modal];
+        if(this.props.show) classes.push(styles.show);
+        classes.concat();
 
-    return (
-        <Fragment>
-            <Backdrop show={props.show} click={props.backdropClick}/>
-            <div className={classes.join(' ')}>
-                {props.children}
-            </div>
-        </Fragment>    
-    );
+        return (
+            <Fragment>
+                <Backdrop show={this.props.show} click={this.props.backdropClick}/>
+                <div className={classes.join(' ')}>
+                    {this.props.children}
+                </div>
+            </Fragment>    
+        );
+    }
 }
     
 
-export default modal;
+export default Modal;
