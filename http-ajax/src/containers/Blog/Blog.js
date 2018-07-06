@@ -10,12 +10,11 @@ class Blog extends Component {
     
     state = {
         posts:[],
-        selectedPost:null
+        selectedId: null
     }
 
     getFullPost(id){
-        const selectedPost = this.state.posts.filter(post => id === post.id);
-        this.setState({selectedPost:selectedPost[0]});
+        this.setState({selectedId:id});
     }
 
     componentDidMount(){
@@ -52,7 +51,7 @@ class Blog extends Component {
                     {posts}
                 </section>
                 <section>
-                    <FullPost post={this.state.selectedPost} />
+                    <FullPost id={this.state.selectedId} />
                 </section>
                 <section>
                     <NewPost />

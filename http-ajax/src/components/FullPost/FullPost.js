@@ -5,13 +5,13 @@ import './FullPost.css';
 class FullPost extends Component {
     render () {
         let post = <p style={{textAlign:"center"}}>Please select a Post!</p>;
-        if(this.props.post){
+        if(this.props.id){
             post = (
                 <div className="FullPost">
-                    <h1>{this.props.post.title}</h1>
-                    <p>{this.props.post.body}</p>
+                    <h1>Title</h1>
+                    <p>Author</p>
                     <div className="Edit">
-                        <button className="Delete" onClick={this.props.post.click}>Delete</button>
+                        <button className="Delete" >Delete</button>
                     </div>
                 </div>
 
