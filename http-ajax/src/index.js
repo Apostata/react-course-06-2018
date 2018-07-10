@@ -28,6 +28,10 @@ var resInterceptor = axios.interceptors.response.use(
     }
 );
 
+axios.defaults.baseURL = 'https://jsonplaceholder.typicode.com';
+axios.defaults.headers.common['Authorization'] = 'AUTH TOKEN';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+
 //romovendo interceptors
 // axios.interceptors.request.eject(reqInterceptor);
 // axios.interceptors.response.eject(resInterceptor);
