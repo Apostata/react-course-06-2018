@@ -10,7 +10,8 @@ class Blog extends Component {
     
     state = {
         posts:[],
-        selectedId: null
+        selectedId: null,
+        error: false
     }
 
     getFullPost(id){
@@ -29,21 +30,26 @@ class Blog extends Component {
                 }
             });
 
-            console.log(updatedPosts);
-
             this.setState({posts: updatedPosts});
+        })
+        .catch(error => {
+            this.setState({error:true});
         });
     }
 
     render () {
-        const posts = this.state.posts.map(post => {
-            return <Post 
-                        key={post.id}
-                        title={post.title}
-                        author={post.author}
-                        click={()=>this.getFullPost.bind(this)(post.id)}
-                    />
-        });
+        let posts = <p style={{textAlign: "center"}}>Algo de errado não está certo!</p>
+        
+        if(!this.state.error){
+            posts = this.state.posts.map(post => {
+                return <Post 
+                            key={post.id}
+                            title={post.title}
+                            author={post.author}
+                            click={()=>this.getFullPost.bind(this)(post.id)}
+                        />
+            });
+        }
 
         return (
             <div>
