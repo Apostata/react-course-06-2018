@@ -7,7 +7,7 @@ const withErrorHandler = (WrappedComponent, axios ) =>{
             error: null
         }
 
-        componentDidMount(){
+        componentWillMount(){
             axios.interceptors.response.use(req =>{ // na requisição limpa o modal
                 this.setState({
                     error: null
