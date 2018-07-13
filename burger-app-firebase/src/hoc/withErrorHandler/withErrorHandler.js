@@ -6,20 +6,26 @@ const withErrorHandler = (WrappedComponent, axios ) =>{
         state = {
             error: null
         }
+        
 
         componentWillMount(){
-            axios.interceptors.response.use(req =>{ // na requisição limpa o modal
+           this.reqInterceptor = axios.interceptors.request.use(req =>{ // na requisição limpa o modal
                 this.setState({
                     error: null
                 });
                 return req;
             });
 
-            axios.interceptors.response.use(res => res, error =>{
+            this.resInterceptor = axios.interceptors.response.use(res => res, error =>{
                this.setState({
                    error:error
                });
-            })
+            });
+        }
+
+        componentWillUnmount(){
+            axios.interceptors.request.eject(this.reqInterceptor);
+            axios.interceptors.response.eject(this.resInterceptor);
         }
 
         errorConfirmedHandler(){
