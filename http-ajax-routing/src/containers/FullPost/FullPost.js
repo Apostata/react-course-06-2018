@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 
 import './FullPost.css';
@@ -33,17 +33,20 @@ class FullPost extends Component {
 
         if(this.state.loadedPost){
             post = (
-                <section className="FullPost">
+                <Fragment>
                     <h1>{this.state.loadedPost.title}</h1>
                     <p>{this.state.loadedPost.body}</p>
                     <div className="Edit">
                         <button onClick={()=>this.deletePost()} className="Delete" >Delete</button>
                     </div>
-                </section>
-
+                </Fragment>
             );
         }
-        return post;
+        return (
+            <section className="FullPost">
+                {post}
+            </section>
+        );
     }
 }
 
