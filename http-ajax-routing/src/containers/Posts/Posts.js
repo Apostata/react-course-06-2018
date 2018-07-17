@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import styles from './Posts.css';
 import Post from '../../components/Post/Post';
-import {Link} from 'react-router-dom';
+//import {Link} from 'react-router-dom';
 
 import axios from '../../axios';
 
@@ -31,7 +31,11 @@ class Posts extends Component{
     }
 
     getFullPost(id){
-        this.setState({selectedId:id});
+        //this.setState({selectedId:id});
+        
+        //this.props.history.push({pathname:`/${id}`});
+        //ou
+        this.props.history.push(`/${id}`);
     }
     
     render(){
@@ -40,13 +44,14 @@ class Posts extends Component{
         if(!this.state.error){
             posts = this.state.posts.map(post => {
                 return (
-                    <Link to={`/${post.id}`} key={post.id}>
+                    // <Link to={`/${post.id}`} key={post.id}>
                         <Post 
+                            key={post.id}
                             title={post.title}
                             author={post.author}
                             click={()=>this.getFullPost.bind(this)(post.id)}
                         />
-                    </Link>    
+                    // </Link>    
                 )
             });
         }
