@@ -73,3 +73,20 @@ Navegando entre as rotas (funcionando de fato):
         pathname: a rota em si, no caso /novo-post
         hash: uma ancora
         search: parametro passados para url
+
+    
+    as propriedades da rota não estão disponíveis nos componentes filhos,
+    apenas nos componentes setados em "<Route component={compoenente}/>".
+    Porém usando uma HOC (High order function), chamada "withRouter" nativa do react-router-dom,
+    isso é possível:
+
+        import {withRouter} from 'react-router-dom';
+        ...
+
+        const post = (props) => {
+            return (
+                ... some jsx
+            );
+        }
+
+        export default withRouter(post);
