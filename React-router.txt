@@ -70,9 +70,23 @@ Navegando entre as rotas (funcionando de fato):
     ...
 
     propriedades de "to" podem ser:
-        pathname: a rota em si, no caso /novo-post
+        pathname: a rota em si, no caso /novo-post 
         hash: uma ancora
         search: parametro passados para url
+
+        todas as paths são absolutas, para torna-las relativas por exemplo 
+        você está na página /posts e quer navegar para /posts/edit:
+
+        <Link to={{
+                pathname: this.props.match.url + '/edit'
+            }}>Editar este post</Link>
+
+            ou
+
+        <Link to={{this.props.match.url + '/edit' }}>Editar este post</Link>
+
+        
+        desta forma a path será relativa à página post
 
     
     as propriedades da rota não estão disponíveis nos componentes filhos,
