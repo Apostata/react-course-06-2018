@@ -50,8 +50,9 @@ Renderizando rotas:
     render: é a função que deve ser executada quando o caminho for requisitado
     component: um Component é renderizado quando o caminho for requisitado (No caso o componente "Posts")
 
-Navegando entre as rotas (funcionando de fato):
+Navegando entre as rotas (funcionando de fato): 
 
+   import {Link} from 'react-router-dom';
     ...
     <nav>
         <ul>
@@ -104,3 +105,57 @@ Navegando entre as rotas (funcionando de fato):
         }
 
         export default withRouter(post);
+
+Estilizando links
+    é necessário importar ao invés de "NavLink" ao invés de "Link":
+    import {NavLink} from 'react-router-dom';
+    ...
+    <nav>
+        <ul>
+            <li>
+                <NavLink to="/">Home</NavLink>
+            </li>
+            <li>
+                <NavLink to={{
+                    pathname: '/novo-post',
+                    hash: '#submit',
+                    search:'?quick-submit=true'
+                }}>Novo Post</NavLink>
+            </li>
+        </ul>
+    </nav>
+    ...
+
+    NavLink passa classes e outros argumentos para a rota,
+    permitindo assim que você rastreie a rota para a qual você navegou
+
+Extraindo parametros passados por uma rota:
+    exemplo para carregar uma página de um post com com id 2:
+        /post/2
+        usa a propriedade matc.params, que é passada para props
+       ...
+
+        class FullPost extends Component {
+            state = {
+                loadedPost: null
+            }
+
+            componentDidMount(){
+                if(this.props.match.params.id){ 
+                    axios.get(`/posts/${this.props.match.params.id}`)
+                    .then(response =>{
+                        this.setState({loadedPost: response.data});
+                    });
+                }
+            }
+
+           ...
+        }
+
+        export default FullPost;
+
+        para pegar uma serach query ou uma hash passada:
+            hash: this.props.location.hash(statefull) ou  props.location.hash(stateless),
+            search: this.props.location.search(statefull) ou props.location.search(stateless)
+
+            parametro search retorna um array com chave e valor. Exemplo = ['busca', '5']

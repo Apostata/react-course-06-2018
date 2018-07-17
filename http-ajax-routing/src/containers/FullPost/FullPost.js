@@ -8,14 +8,14 @@ class FullPost extends Component {
         loadedPost: null
     }
 
-    componentDidUpdate(prevProps, prevState){
-        if(this.props.id){ //verifica não é nullo e...
-            if(prevProps.id !== this.props.id){ //se prevProps é diferente do atual
-                axios.get(`/posts/${this.props.id}`)
-                .then(response =>{
-                    this.setState({loadedPost: response.data});
-                })
-            }
+    componentDidMount(){
+        console.log(this.props);
+
+        if(this.props.match.params.id){ //verifica não é nullo e...
+            axios.get(`/posts/${this.props.match.params.id}`)
+            .then(response =>{
+                this.setState({loadedPost: response.data});
+            });
         }
     }
 
@@ -33,13 +33,13 @@ class FullPost extends Component {
 
         if(this.state.loadedPost){
             post = (
-                <div className="FullPost">
+                <section className="FullPost">
                     <h1>{this.state.loadedPost.title}</h1>
                     <p>{this.state.loadedPost.body}</p>
                     <div className="Edit">
                         <button onClick={()=>this.deletePost()} className="Delete" >Delete</button>
                     </div>
-                </div>
+                </section>
 
             );
         }

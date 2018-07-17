@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Posts from '../Posts/Posts';
 import NewPost from '../NewPost/NewPost';
-import {Route, Link} from 'react-router-dom';
+import {Route, NavLink} from 'react-router-dom';
 import './Blog.css';
+import FullPost from '../FullPost/FullPost';
 
 class Blog extends Component {
     state = {
@@ -17,20 +18,29 @@ class Blog extends Component {
                     <nav>
                         <ul>
                             <li>
-                                <Link to="/">Home</Link>
+                                <NavLink
+                                    to="/"
+                                    exact
+                                    activeClassName="my-active"
+                                    activeStyle ={{
+                                        color: '#fa923f',
+                                        textDecoration: 'underline'
+                                    }}
+                                >Home</NavLink>
                             </li>
                             <li>
-                                <Link to={{
+                                <NavLink to={{
                                     pathname: '/novo-post',
                                     hash: '#submit',
                                     search:'?quick-submit=true'
-                                }}>Novo Post</Link>
+                                }}>Novo Post</NavLink>
                             </li>
                         </ul>
                     </nav>
                 </header>
                 <Route path="/" exact component={Posts} />
                 <Route path="/novo-post" component={NewPost} />
+                <Route path="/post/:id" exact component={FullPost} />
             </div>
         );
     }
