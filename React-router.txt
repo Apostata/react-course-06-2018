@@ -1,0 +1,75 @@
+react-router vs react-router-dom
+    Apenas react-router-dom precisa ser instalado.
+    react-router era instalado anteriormente, agora já vem com react-router-dom,
+    porém para se procurar na internet, procure o pacote como react-router
+
+Renderizando rotas:
+    ...
+    import {BrowserRouter} from 'react-router-dom';
+    ...
+
+    class App extends Component {
+        render() {
+            return (
+                <BrowserRouter>
+                    <div className="App">
+                    <Blog />
+                    </div>
+                </BrowserRouter>  
+            );
+        }
+    }
+    ...
+
+    Então você pode criar as rotas nos arquivos internos que você desejar:
+    neste caso é necessário importar Route do react-router-dom e configura-lo
+
+    ...
+    import {Route} from 'react-router-dom';
+    ...
+
+    class Blog extends Component {
+      ...
+
+        render () {
+            return (
+                <div className="Blog">
+                    ...
+                    <Route path="/" exact render={()=> <h1>Home</h1>} />
+                    <Route path="/" exact component={Posts} />
+                </div>
+            );
+        }
+    }
+
+    export default Blog;
+
+    no exemplo acima:
+    path:  é o caminho que é navegado no browser
+    exact: deve ser exatamente este caminho
+    render: é a função que deve ser executada quando o caminho for requisitado
+    component: um Component é renderizado quando o caminho for requisitado (No caso o componente "Posts")
+
+Navegando entre as rotas (funcionando de fato):
+
+    ...
+    <nav>
+        <ul>
+            <li>
+                <Link to="/">Home</Link>
+            </li>
+            <li>
+                <Link to={{
+                    pathname: '/novo-post',
+                    hash: '#submit',
+                    search:'?quick-submit=true'
+                }}>Novo Post</Link>
+            </li>
+        </ul>
+    </nav>
+    ...
+
+    propriedades de "to" podem ser:
+        pathname: a rota em si, no caso /novo-post
+        hash: uma ancora
+        search: parametro passados para url

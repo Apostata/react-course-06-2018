@@ -1,0 +1,75 @@
+//Adiciona um interceptor para capturar uma chamada ajax
+
+var reqInterceptor = axios.interceptors.request.use(
+    request => {
+        console.log(request);
+        return request;
+    },
+
+    error => {
+        return Promise.reject(error)
+    }
+);
+
+
+//Adiciona um interceptor para capturar uma responsta ajax
+
+var resInterceptor = axios.interceptors.response.use(
+    response =>{
+        console.log(response);
+        return response;
+    },
+    error => {
+        console.log(error);
+    }
+);
+
+import React, {Component, Fragment} from 'react';
+import Modal from '../../components/UI/Modal/Modal';
+
+Exemplo de um componente de alta Ordem para retornar um componente passado como parametro envolto com
+interceptors para tratamento de erro, mostrando o erro no modal.
+
+Captura erros ao ser montado e libera os interceptors ao ser desmontado.
+
+const withErrorHandler = (WrappedComponent, axios ) =>{
+    return class extends Component{ //classe anonima
+        state = {
+            error: null
+        }        
+
+        componentWillMount(){
+           this.reqInterceptor = axios.interceptors.request.use(req =>{ // na requisição limpa o modal
+                this.setState({
+                    error: null
+                });
+                return req;
+            });
+
+            this.resInterceptor = axios.interceptors.response.use(res => res, error =>{
+               this.setState({
+                   error:error
+               });
+            });
+        }
+
+        componentWillUnmount(){
+            axios.interceptors.request.eject(this.reqInterceptor);
+            axios.interceptors.response.eject(this.resInterceptor);
+        }
+
+        ...
+        render(){
+            return (
+                <Fragment>
+                    <Modal show={this.state.error} backdropClick={this.errorConfirmedHandler.bind(this)}>
+                       {this.state.error ? this.state.error.message : null}
+                    </Modal>
+                    <WrappedComponent {...this.props} />
+                </Fragment>
+            );
+        }
+    }
+};
+
+export default withErrorHandler; //exporta função
