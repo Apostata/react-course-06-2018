@@ -225,3 +225,34 @@ Navegando Programaticamente:
         export default Posts;
     
     Redirect
+        Redireciona para outra rota como o próprio nome diz:
+        
+        import {Route, Switch, Redirect} from 'react-router-dom';
+
+        ....
+            <Switch>
+                <Route path="/posts" component={Posts} />
+                <Route path="/" component={Home} />
+                ...
+                <Redirect from="/"  to="/posts" />
+            </Switch>
+        ...
+
+        você pode usar o compoenente <Redirect /> para condicionalmente redirecionar caso
+        um estado tenha mudado
+
+        redirecionando com history.push ou history.replace
+
+            após alguma ação qualquer você pode redirecionar 
+
+            vamo supor que você esteja na página Home,
+
+            this.props.history.push('/posts')
+
+            que além de redirecionar para a página /posts, torna a página principal no histórico.
+            Caso você aperte o botão voltar irá voltar para a página Home.
+
+            this.props.history.replace('/posts')
+
+            que apenas redireciona para a página /posts, subistituindo o histórico da página atual.
+            Caso você aperte o botão voltar voltará para a página anterior a Home, neste caso.
