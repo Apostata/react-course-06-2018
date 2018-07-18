@@ -24,52 +24,73 @@ var resInterceptor = axios.interceptors.response.use(
     }
 );
 
-import React, {Component, Fragment} from 'react';
-import Modal from '../../components/UI/Modal/Modal';
 
-Exemplo de um componente de alta Ordem para retornar um componente passado como parametro envolto com
-interceptors para tratamento de erro, mostrando o erro no modal.
+// Cria uma instancia de axios para setar padrões para ela 
+    arquivo axios:
+        import axios from 'axios';
 
-Captura erros ao ser montado e libera os interceptors ao ser desmontado.
+        const instance = axios.create({
+            baseURL: 'https://jsonplaceholder.typicode.com'
+        });
 
-const withErrorHandler = (WrappedComponent, axios ) =>{
-    return class extends Component{ //classe anonima
-        state = {
-            error: null
-        }        
+        instance.defaults.headers.common['Authorization'] = 'AUTH TOKEN FROM INSTANCE';
 
-        componentWillMount(){
-           this.reqInterceptor = axios.interceptors.request.use(req =>{ // na requisição limpa o modal
-                this.setState({
-                    error: null
+        export default instance;
+
+    //import a instancia criada e usa:
+
+    import React, {Component, Fragment} from 'react';
+    import Modal from '../../components/UI/Modal/Modal';
+    import axios from '../../axios';
+
+    Exemplo de um componente de alta Ordem para retornar um componente passado como parametro envolto com
+    interceptors para tratamento de erro, mostrando o erro no modal.
+
+    Captura erros ao ser montado e libera os interceptors ao ser desmontado.
+
+    const withErrorHandler = (WrappedComponent, axios ) =>{
+        return class extends Component{ //classe anonima
+            state = {
+                error: null
+            }        
+
+            componentWillMount(){
+            this.reqInterceptor = axios.interceptors.request.use(req =>{ // na requisição limpa o modal
+                    this.setState({
+                        error: null
+                    });
+                    return req;
                 });
-                return req;
-            });
 
-            this.resInterceptor = axios.interceptors.response.use(res => res, error =>{
-               this.setState({
-                   error:error
-               });
-            });
+                this.resInterceptor = axios.interceptors.response.use(res => res, error =>{
+                this.setState({
+                    error:error
+                });
+                });
+            }
+
+            componentWillUnmount(){
+                axios.interceptors.request.eject(this.reqInterceptor);
+                axios.interceptors.response.eject(this.resInterceptor);
+            }
+
+            ...
+            render(){
+                return (
+                    <Fragment>
+                        <Modal show={this.state.error} backdropClick={this.errorConfirmedHandler.bind(this)}>
+                        {this.state.error ? this.state.error.message : null}
+                        </Modal>
+                        <WrappedComponent {...this.props} />
+                    </Fragment>
+                );
+            }
         }
+    };
 
-        componentWillUnmount(){
-            axios.interceptors.request.eject(this.reqInterceptor);
-            axios.interceptors.response.eject(this.resInterceptor);
-        }
+    export default withErrorHandler; //exporta função
 
-        ...
-        render(){
-            return (
-                <Fragment>
-                    <Modal show={this.state.error} backdropClick={this.errorConfirmedHandler.bind(this)}>
-                       {this.state.error ? this.state.error.message : null}
-                    </Modal>
-                    <WrappedComponent {...this.props} />
-                </Fragment>
-            );
-        }
-    }
-};
+    axios.get -> requisição get assíncrona
+    axios.post -> requisição post assíncrona
+    axios.delete -> requisição del assíncrona
 
-export default withErrorHandler; //exporta função
