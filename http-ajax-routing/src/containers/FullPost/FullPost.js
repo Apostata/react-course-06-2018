@@ -9,8 +9,17 @@ class FullPost extends Component {
     }
 
     componentDidMount(){
-        console.log(this.props);
+        this.loadData()
+    }
 
+    componentDidUpdate(prevProps, prevState) {
+        //console.log(this.props.match.params.id, prevProps.match.params.id)
+       if(this.props.match.params.id !== prevProps.match.params.id){
+            this.loadData();
+       }
+    }
+
+    loadData(){
         if(this.props.match.params.id){ //verifica não é nullo e...
             axios.get(`/posts/${this.props.match.params.id}`)
             .then(response =>{
@@ -20,7 +29,7 @@ class FullPost extends Component {
     }
 
     deletePost(){
-        axios.delete(`/posts/${this.props.id}`)
+        axios.delete(`/posts/${this.props.match.params.id}`)
         .then(response => console.log(response));
     }
 
