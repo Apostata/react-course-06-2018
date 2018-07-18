@@ -129,6 +129,24 @@ Estilizando links
     NavLink passa classes e outros argumentos para a rota,
     permitindo assim que você rastreie a rota para a qual você navegou
 
+Switch, para pegar a primeira ocorrencia:
+    ao navegar para /posts por exemplo
+    caso hajam as seguintes rotas no compoenente:
+
+        <Route path="/posts" component={Posts} />
+        <Route path="/" component={Home} />
+        
+
+    ambas as rotas serão executadas pois a URL navegadas possui as duas expressõoes:
+    "/" e "/posts".
+
+    para que isso não ocorra, suar o compoenente Switch, que pega a primeira
+    ocorrencia apenas:
+        <Switch>
+            <Route path="/posts" component={Posts} />
+            <Route path="/" component={Home} />
+        </Switch>
+
 Extraindo parametros passados por uma rota:
     exemplo para carregar uma página de um post com com id 2:
         /post/2
@@ -198,10 +216,12 @@ Navegando Programaticamente:
 
                 return(
                     <section className="Posts">
-                            {posts}
+                        {posts}
                     </section>
                 );
             }
         };
 
         export default Posts;
+    
+    Redirect
