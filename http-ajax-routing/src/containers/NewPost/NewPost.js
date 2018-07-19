@@ -7,8 +7,8 @@ class NewPost extends Component {
     state = {
         title: '',
         content: '',
-        author: 'Rene'
-        //submited: false
+        author: 'Rene',
+        submited: false
     }
 
     componentDidMount(){
@@ -25,10 +25,9 @@ class NewPost extends Component {
         axios.post('/posts', data)
         .then(response =>{
             console.log(response);
-            //this.props.history.push('/posts/');
-            //ou
-            this.props.history.replace('/posts/');
-            
+            this.setState({
+                submited: true
+            })
         });
     }
 

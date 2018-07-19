@@ -239,7 +239,22 @@ Navegando Programaticamente:
         ...
 
         você pode usar o compoenente <Redirect /> para condicionalmente redirecionar caso
-        um estado tenha mudado
+        um estado tenha mudado:
+
+        ...
+        class NewPost extends Component {
+            state = {
+                submited: false
+            }
+
+            render () {
+                if(this.state.submited){
+                    
+                }
+                return ()
+            }
+        }
+        ...
 
         redirecionando com history.push ou history.replace
 
