@@ -283,3 +283,15 @@ Navegando Programaticamente:
                 null
             }
         }
+    
+    Capturando rotas não conhecidas ou 404:
+        
+        <Route render={() => <h1>Não encontrado!</h1>} />
+        {/* <Redirect from="/"  to="/posts" /> */}
+
+        porém não funciona em conjunto com path= "/", precisando retirar
+        ou um ou outro.
+
+        
+    Lazy load : carregando componentes sob demanda:
+    
