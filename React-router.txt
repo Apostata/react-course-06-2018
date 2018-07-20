@@ -271,3 +271,15 @@ Navegando Programaticamente:
 
             que apenas redireciona para a página /posts, subistituindo o histórico da página atual.
             Caso você aperte o botão voltar voltará para a página anterior a Home, neste caso.
+    
+    Guards
+        Para navegar para rotas condicionalmente:
+
+        {
+            if(this.state.auth){
+                <Route path="/novo-post" component={NewPost} />
+            }
+            else{
+                null
+            }
+        }
