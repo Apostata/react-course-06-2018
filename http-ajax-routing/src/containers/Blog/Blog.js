@@ -46,7 +46,7 @@ class Blog extends Component {
                 <Switch>
                     {this.state.auth ? <Route path="/novo-post" component={AsyncNewPost} /> : null }
                     <Route path="/posts" component={Posts} />
-                    <Route render={() => <h1>Não encontrado!</h1>} />
+                    <Route render={() => <section><h1>Não encontrado!</h1></section>} />
                     {/* <Redirect from="/"  to="/posts" /> */}
                 </Switch>
                 
