@@ -224,150 +224,175 @@ Navegando Programaticamente:
 
         export default Posts;
     
-    Redirect
-        Redireciona para outra rota como o próprio nome diz:
-        
-        import {Route, Switch, Redirect} from 'react-router-dom';
+Redirect
+    Redireciona para outra rota como o próprio nome diz:
+    
+    import {Route, Switch, Redirect} from 'react-router-dom';
 
-        ....
-            <Switch>
-                <Route path="/posts" component={Posts} />
-                <Route path="/" component={Home} />
-                ...
-                <Redirect from="/"  to="/posts" />
-            </Switch>
-        ...
+    ....
+        <Switch>
+            <Route path="/posts" component={Posts} />
+            <Route path="/" component={Home} />
+            ...
+            <Redirect from="/"  to="/posts" />
+        </Switch>
+    ...
 
-        você pode usar o compoenente <Redirect /> para condicionalmente redirecionar caso
-        um estado tenha mudado:
+    você pode usar o compoenente <Redirect /> para condicionalmente redirecionar caso
+    um estado tenha mudado:
 
-        ...
-        class NewPost extends Component {
-            state = {
-                submited: false
+    ...
+    class NewPost extends Component {
+        state = {
+            submited: false
+        }
+
+        render () {
+            if(this.state.submited){
+                
             }
+            return ()
+        }
+    }
+    ...
 
+    redirecionando com history.push ou history.replace
+
+        após alguma ação qualquer você pode redirecionar 
+
+        vamo supor que você esteja na página Home,
+
+        this.props.history.push('/posts')
+
+        que além de redirecionar para a página /posts, torna a página principal no histórico.
+        Caso você aperte o botão voltar irá voltar para a página Home.
+
+        this.props.history.replace('/posts')
+
+        que apenas redireciona para a página /posts, subistituindo o histórico da página atual.
+        Caso você aperte o botão voltar voltará para a página anterior a Home, neste caso.
+
+Guards
+    Para navegar para rotas condicionalmente:
+
+    {
+        if(this.state.auth){
+            <Route path="/novo-post" component={NewPost} />
+        }
+        else{
+            null
+        }
+    }
+
+Capturando rotas não conhecidas ou 404:
+    
+    <Route render={() => <h1>Não encontrado!</h1>} />
+    {/* <Redirect from="/"  to="/posts" /> */}
+
+    porém não funciona em conjunto com path= "/", precisando retirar
+    ou um ou outro.
+
+    
+Lazy load : carregando componentes sob demanda:
+    Necessário criar um componente de alta ordem:
+        
+        import React, {Component}  from 'react';
+
+        const  asyncComponent = (importComponent) =>{
+            return class extends Component{
+                state = {
+                    component: null
+                }
+
+                componentDidMount(){
+                    importComponent()
+                        .then(cmpt =>{
+                            this.setState({component:cmpt.default});
+                        })
+                }
+
+                render(){
+                    const COMPONENT = this.state.component;
+
+                    return COMPONENT ? <COMPONENT {...this.props} /> : null;
+                }
+            }
+        }
+
+        export default asyncComponent;
+
+    No compoenente o qual fará a chamada assincrona:
+
+        import asyncComponent from '../../hoc/ayncComponent';
+        ...
+
+        const AsyncNewPost = asyncComponent(() => {
+            return import('../NewPost/NewPost');
+        });
+
+
+        ...
+
+        class Blog extends Component {
+            ...
             render () {
-                if(this.state.submited){
-                    
-                }
-                return ()
-            }
-        }
-        ...
-
-        redirecionando com history.push ou history.replace
-
-            após alguma ação qualquer você pode redirecionar 
-
-            vamo supor que você esteja na página Home,
-
-            this.props.history.push('/posts')
-
-            que além de redirecionar para a página /posts, torna a página principal no histórico.
-            Caso você aperte o botão voltar irá voltar para a página Home.
-
-            this.props.history.replace('/posts')
-
-            que apenas redireciona para a página /posts, subistituindo o histórico da página atual.
-            Caso você aperte o botão voltar voltará para a página anterior a Home, neste caso.
-    
-    Guards
-        Para navegar para rotas condicionalmente:
-
-        {
-            if(this.state.auth){
-                <Route path="/novo-post" component={NewPost} />
-            }
-            else{
-                null
-            }
-        }
-    
-    Capturando rotas não conhecidas ou 404:
-        
-        <Route render={() => <h1>Não encontrado!</h1>} />
-        {/* <Redirect from="/"  to="/posts" /> */}
-
-        porém não funciona em conjunto com path= "/", precisando retirar
-        ou um ou outro.
-
-        
-    Lazy load : carregando componentes sob demanda:
-        Necessário criar um componente de alta ordem:
-            
-            import React, {Component}  from 'react';
-
-            const  asyncComponent = (importComponent) =>{
-                return class extends Component{
-                    state = {
-                        component: null
-                    }
-
-                    componentDidMount(){
-                        importComponent()
-                            .then(cmpt =>{
-                                this.setState({component:cmpt.default});
-                            })
-                    }
-
-                    render(){
-                        const COMPONENT = this.state.component;
-
-                        return COMPONENT ? <COMPONENT {...this.props} /> : null;
-                    }
-                }
-            }
-
-            export default asyncComponent;
-
-        No compoenente o qual fará a chamada assincrona:
-
-            import asyncComponent from '../../hoc/ayncComponent';
-            ...
-
-            const AsyncNewPost = asyncComponent(() => {
-                return import('../NewPost/NewPost');
-            });
-
-
-            ...
-
-            class Blog extends Component {
-                ...
-                render () {
-                    return (
-                        <div className="Blog">
-                        ...
-                            <Switch>
-                                <Route path="/novo-post" component={AsyncNewPost} />
-                                ...
-                            </Switch>
-                            
-                        </div>
-                    );
-                }
-            }
-
-    React app cmo sub-domínio:
-
-        Setar a BrowserRouter com basename "/sub-domínio"
-
-        import {BrowserRouter} from 'react-router-dom';
-
-        class App extends Component {
-            render() {
                 return (
-                <BrowserRouter basename="/sub-domínio">
-                    <div className="App">
-                    <Blog />
+                    <div className="Blog">
+                    ...
+                        <Switch>
+                            <Route path="/novo-post" component={AsyncNewPost} />
+                            ...
+                        </Switch>
+                        
                     </div>
-                </BrowserRouter>  
                 );
             }
         }
 
-            export default App;
+React app cmo sub-domínio:
 
-Links:
+    Setar a BrowserRouter com basename "/sub-domínio"
+
+    import {BrowserRouter} from 'react-router-dom';
+
+    class App extends Component {
+        render() {
+            return (
+            <BrowserRouter basename="/sub-domínio">
+                <div className="App">
+                <Blog />
+                </div>
+            </BrowserRouter>  
+            );
+        }
+    }
+
+        export default App;
+
+
+Passando dados entre páginas aninhadas:
+
+    ...
+    import ContactData from './ContactData/ContactData';
+    ...
+
+    class Checkout extends Component{
+       ...
+        render(){
+            return(
+                <div>
+                    ...
+                    
+                    <Route 
+                        path={`${this.props.match.path}/contact-data`}
+                        render={()=>{<ContactData ingredients={this.state.ingredients} />}} 
+                    />
+                </div>
+            );
+        }
+    };
+
+    ...
+
+Links uteis:
     React Router Docs: https://reacttraining.com/react-router/web/guides/philosophy
