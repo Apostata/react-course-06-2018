@@ -24,7 +24,7 @@ class ContactData extends Component {
 
         const order = {
             ingredients: this.props.ingredients,
-            price: this.props.totalPrice,
+            price: this.props.price,
 
             customer: {
                 name: 'Rene Souza',
@@ -37,7 +37,7 @@ class ContactData extends Component {
             },
             deliveryMethod: 'espresso'
         };
-
+        
         axios.post('/orders.json', order)  //.json por conta do firebase
             .then(response =>{
                 this.setState({loading:false, submited:true});

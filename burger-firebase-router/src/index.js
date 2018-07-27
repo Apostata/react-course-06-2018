@@ -6,12 +6,7 @@ import './index.scss';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-const app = (
-    <Router>
-        <App />
-    </Router>
-);
+const app = (<Router><App /></Router>);
 
-ReactDOM.render(app , document.getElementById('root')
-);
+ReactDOM.render(app , document.getElementById('root'));
 registerServiceWorker();
