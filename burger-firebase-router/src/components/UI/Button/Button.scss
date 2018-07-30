@@ -24,6 +24,11 @@
         color: map-get($cores, 'verde-escuro');
     }
 
+    &:disabled{
+        color: map-get($cores, 'cinza-claro');
+        cursor: not-allowed;
+    }
+
     &.DrawerToggle {
         width: 40px;
         height: 100%;
