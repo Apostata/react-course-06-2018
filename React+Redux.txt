@@ -1,0 +1,62 @@
+React + Redux:
+    Setup do componente principal
+        /*
+        Importar o createStore do redux e o componente Provider do react-redux no
+        componente pricipal (normalmente index.js) e engloba-lo com o Provider.
+        Passando como parametro o store criada da função importada do redux 
+        passando como parametro o reducer que também deverá serm importado.
+        */
+
+        import {createStore} from 'redux';
+        import {Provider} from 'react-redux';
+        import reducer from  './store/reducer';
+        const store = createStore(reducer);
+
+        ReactDOM.render(
+            <Provider store={store} >
+                <App />
+            </Provider>,
+            document.getElementById('root')
+        );
+
+    Usando em um Container
+        /*
+        Importar o connect do react-redux no Container o qual será conectado com
+        a store.
+        */
+
+        import {connect} from 'react-redux';
+
+        /*
+        Criar duas funções, uma para pegar o estado da store e passar para a 
+        props do compoenente. Outra para passar como props para o componente
+        uma ou mais actions.
+        */
+
+        const mapStateToProps = state =>{
+            return{
+                ctr: state.counter
+            };
+        };
+        
+        /*
+        Recebe state da store e passa para props do compoenente
+        */
+
+
+        const mapDispatchToProps = dispatch =>{
+            return { 
+                onIncrementCounter: () => dispatch({type: 'INCREMENT'})
+            }
+        };
+
+        /*
+        Cria actions e passa para a props do componente
+        */
+
+        export default connect(mapStateToProps, mapDispatchToProps)(Counter);
+
+        /*
+        conecta a store com o compoenente passando o estado e as actions como props
+        connect retorna uma função de alta ordem
+        */
