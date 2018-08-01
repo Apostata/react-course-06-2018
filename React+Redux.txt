@@ -60,3 +60,6 @@ React + Redux:
         conecta a store com o compoenente passando o estado e as actions como props
         connect retorna uma função de alta ordem
         */
+
+        Immutable Update Patterns:
+         http://redux.js.org/docs/recipes/reducers/ImmutableUpdatePatterns.html
