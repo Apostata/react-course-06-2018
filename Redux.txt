@@ -1,0 +1,65 @@
+Redux puro
+
+    para usar o Redux é necessário importa-lo:
+    const redux = require('redux');
+
+    definir uma store:
+
+    Store:
+        A store é onde serão armazenados todos os states(estados)
+        const createStore = redux.createStore;
+
+        Para criar uma store, primeiro é necessário criar ao menos um reducer e passar
+        como parametro da store;
+
+        Reducer:
+            São funções puras(não alteram nenhum parametro passado para ela) que 
+            de fato alteram o stado quando solicidatos pelo dispatch
+            
+            const rootReducer = function(state = initialState, action){
+                return state;
+            };
+
+        const store = createStore(rootReducer);
+
+
+        Dispatch Action:
+            É um quem dispara a ação para alterar o estado da storage.
+            Essa acão é recebida pelo Reducer.
+            Sempre é um objeto em javascript que passa pelo menos uma
+            propriedade "type".
+
+            store.dispatch({type: 'SOMETHING'});
+
+            Supondo que um estado inicial de um state seja:
+
+            const initialState = {
+                counter: 0
+            }; 
+
+            Com o seguinte Reducer:
+
+            const rootReducer = function(state = initialState, action){
+                if(action.type === 'INC_COUNTER'){
+                    return {
+                        ...state,
+                        counter: state.counter + action.value
+                    };
+                }
+
+                return state;
+            };
+
+            store.dispatch({type: 'ADD_COUNTER', value:10});
+            console.log(store.getState()); 
+
+            O resultado será = {counter: 10 }
+        
+        Subscription:
+            É quem recebe a resposta de quando o reducer atualiza a store.
+            Sempre usa uma função como parametro.
+
+            store.subscribe(()=>{
+                console.log(store.getState());
+            })
+
