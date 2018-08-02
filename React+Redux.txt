@@ -4,7 +4,7 @@ React + Redux:
         Importar o createStore do redux e o componente Provider do react-redux no
         componente pricipal (normalmente index.js) e engloba-lo com o Provider.
         Passando como parametro o store criada da função importada do redux 
-        passando como parametro o reducer que também deverá serm importado.
+        passando como parametro o reducer que também deverá ser importado.
         */
 
         import {createStore} from 'redux';
@@ -63,3 +63,44 @@ React + Redux:
 
         Immutable Update Patterns:
          http://redux.js.org/docs/recipes/reducers/ImmutableUpdatePatterns.html
+    
+    Combinando reducers
+        No componente principal
+            /*
+            Onde foi criada a store, no caso, no componente principal. Importar
+            alem do redux o combineReducers.
+            Criar uma nova constante com o combineReducers passando um objeto como
+            parametro, contendo todos os reducers importados
+            */
+
+            import {createStore, combineReducers} from 'redux';
+            import counterReducer from  './store/reducers/counter';
+            import resultsReducer from  './store/reducers/results';
+
+            const rootReducer = combineReducers({
+                ctr: counterReducer,
+                res: resultsReducer
+            });
+
+            const store = createStore(rootReducer);
+        
+        No container onde será usado
+
+            /*
+            Passar retorno da função mapStateToProps.{nome no rootReducer}.{estado}:
+            */
+
+            const mapStateToProps = state =>{
+                return {
+                    ctr: state.ctr.counter,
+                    storedResults: state.res.results
+                };
+            };
+
+        Links Uteis
+            Redux Docs: http://redux.js.org/
+            Core Concepts: http://redux.js.org/docs/introduction/CoreConcepts.html
+            Actions: http://redux.js.org/docs/basics/Actions.html
+            Reducers: http://redux.js.org/docs/basics/Reducers.html
+            Redux FAQs: http://redux.js.org/docs/FAQ.html
+
