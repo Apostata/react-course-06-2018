@@ -9,7 +9,7 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../axios-orders';
 
 import * as actionTypes from '../../store/actions';
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
 
 class BurgerBuilder extends Component{
 
