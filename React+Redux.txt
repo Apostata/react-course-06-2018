@@ -104,3 +104,72 @@ React + Redux:
             Reducers: http://redux.js.org/docs/basics/Reducers.html
             Redux FAQs: http://redux.js.org/docs/FAQ.html
 
+    Se o compoenente já tem uma HOC atrelado a ele:
+        /*
+        ao inveés de ...
+        */
+
+        export default withErrorHandler(Counter, axios);
+
+        /*
+        usar como parametro da funcção onde seria requerido o compoente...
+        */
+
+        export default withErrorHandler(
+            connect(mapStateToProps, mapDispatchToProps)(Counter), axios
+        );
+
+    Adicionando um middleware ao redux
+        /*
+        Importar o applyMiddleware do redux;
+        */
+
+        import {createStore, combineReducers, applyMiddleware} from 'redux';
+
+        /*
+        Um exemplo de middleware:
+        */
+
+        const logger = store => {
+            return next => {
+                return action =>{
+                    console.log('[Midddleware] Dispatching', action);
+                    const result  = next(action);
+                    console.log('[Midddleware] Next State', store.getState());
+                    return result;
+                }
+            }
+        };
+
+        /*
+        passar como parametro da função createStore o applyMiddleware com o parametro
+        o middleware desejado:
+        */
+
+        const store = createStore(rootReducer, applyMiddleware(logger));
+
+    Integrando o redux devTools com o redux
+        /*
+        Importar compose para jundar middlewares, assim como o combineReducer
+        faz com os reducers
+        porém será passado apenas como um fallback, pois usaremos o compose
+        da extensão do chrome
+        */
+
+        import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
+
+        /*
+        criar uma constante com o compose do redux devtools caso não tenha usar o compose
+        padrão do redux;
+        */
+
+        const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+        /*
+        usar a nova constante como HOC de applyMiddleware:
+        */
+
+        const store = createStore(
+            rootReducer,
+            composeEnhancers(applyMiddleware(logger))
+        );
