@@ -120,6 +120,9 @@ React + Redux:
         );
 
     Adicionando um middleware ao redux
+        O conceito de middleware é algum intermediário entre dois intervalos que
+        excuta alguma ação ou impede que aconteca a próxima ação.
+
         /*
         Importar o applyMiddleware do redux;
         */
@@ -173,3 +176,38 @@ React + Redux:
             rootReducer,
             composeEnhancers(applyMiddleware(logger))
         );
+
+    Integrando o Redux thunk
+        /*
+        Para retornar as actions como funções que podem ser despachadas a quando
+        bem entender.
+        */
+
+        import thunk from 'redux-thunk';
+
+        /*
+        usar thunk como um novo middleware applyMiddleware:
+        */
+
+        const store = createStore(
+            rootReducer,
+            composeEnhancers(applyMiddleware(logger, thunk))
+        );
+
+    Action Creators
+        /*
+        São ações que retornam funções (retornadas pelo middleware do thunk) que
+        permite que você despache ações quando quiser.
+        aceita pegar o estado do componente com o metodo getState, porém
+        não é muito recomendado seu uso
+        */
+        
+        export const asyncStoreResult = result =>{
+            return (dispatch, getState) => {
+                setTimeout(()=>{
+                    const oldCounter = getState().ctr.counter 
+                    // usado no componente onde "ctr" é definido pelo mapStateToProps
+                    dispatch(storeResult(result));
+                }, 2000);
+            }
+        };

@@ -62,4 +62,3 @@ Redux puro
             store.subscribe(()=>{
                 console.log(store.getState());
             })
-
