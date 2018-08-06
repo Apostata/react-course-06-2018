@@ -1,4 +1,4 @@
-import React from 'react';
+import React from '../../../../../../../../Users/tak_esouza/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react';
 import BuildControl from './BuildControl/BuildControl';
 import styles from './BuildControls.scss';
 import controlers from '../../../json/buildControls.json';

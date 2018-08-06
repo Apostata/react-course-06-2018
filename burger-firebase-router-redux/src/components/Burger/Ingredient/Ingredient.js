@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, {Component} from '../../../../../../../../Users/tak_esouza/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react';
 import styles from './Ingredient.scss';
-import PropTypes from 'prop-types';
+import PropTypes from '../../../../../../../../Users/tak_esouza/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/prop-types';
 
 class Ingredient extends Component {
    
