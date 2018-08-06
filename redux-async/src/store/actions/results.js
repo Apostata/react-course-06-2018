@@ -7,7 +7,7 @@ export const storeResult = result =>{
     };
 }
 
-export const asyncStoreResult = result =>{
+export const asyncStoreResult = result =>{ //assync action with thunk
     return dispatch => {
         setTimeout(()=>{
             dispatch(storeResult(result));
