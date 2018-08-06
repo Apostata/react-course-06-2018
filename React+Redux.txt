@@ -211,3 +211,8 @@ React + Redux:
                 }, 2000);
             }
         };
+
+    Links Úteis:
+        Middleware: http://redux.js.org/docs/advanced/Middleware.html
+        redux-thunk package: https://github.com/gaearon/redux-thunk
+        Async Actions: http://redux.js.org/docs/advanced/AsyncActions.html

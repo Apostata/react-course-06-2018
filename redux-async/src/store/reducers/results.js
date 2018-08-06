@@ -5,15 +5,24 @@ const initialState = {
     results:[]
 };
 
+const deleteResult = (state, action) =>{
+    const updatedArray = state.results.filter(item => item.id !== action.id);
+    return updateObject(state, {results: updatedArray});
+};
+
+const storeResult = (state, action) =>{
+    const updatedArray = state.results.concat({id:new Date(), value:action.result})
+    return updateObject(state, {results: updatedArray});
+};
+
 const reducer = (state = initialState, action) =>{
     switch(action.type){
 
         case actionTypes.STORE_RESULT:
-            return updateObject(state, {results: state.results.concat({id:new Date(), value:action.result})});
+            return storeResult(state, action);
            
-
         case actionTypes.DELETE_RESULT:
-            return updateObject(state, {results: state.results.filter(item => item.id !== action.id)});
+            return deleteResult(state, action);
         
         default:
             return state;
