@@ -4,10 +4,12 @@ import Button from '../../../components/UI/Button/Button';
 import Input from '../../../components/UI/Input/Input';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Modal from '../../../components/UI/Modal/Modal';
-
-import styles from './ContactData.scss';
+import * as actions from '../../../store/actions/index';
 
 import axios from '../../../axios-orders';
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
+
+import styles from './ContactData.scss';
 
 class ContactData extends Component {
     state ={
@@ -92,14 +94,11 @@ class ContactData extends Component {
                 valid: true,
             } 
         },
-        loading:false,
-        formIsValid: false,
-        submited:false
+        formIsValid: false
     }
 
     orderHandler(e){
         e.preventDefault();
-       this.setState({loading:true});
         const formData = {};
 
         for(let formElementId in this.state.orderForm){
@@ -111,19 +110,12 @@ class ContactData extends Component {
             price: this.props.price,
             orderData: formData
         };
-        
-        axios.post('/orders.json', order)  //.json por conta do firebase
-            .then(response =>{
-                this.setState({loading:false, submited:true});
-                
-            })
-            .catch(error => {
-                this.setState({loading:false, submited:false});
-            });
+        this.props.asyncOrder(order);
     }
     
 
     submitedHandler(){
+        this.props.purchaseEnded();
         this.props.history.push('/');
     }
 
@@ -204,14 +196,14 @@ class ContactData extends Component {
             </form>;
             
 
-        if(this.state.loading){
+        if(this.props.loading){
             formContent = <Spinner />
         }
         return(
             <div className={styles.ContactData}>
                 <h4>Insira seus dados para entrega</h4>
                 {formContent}
-                <Modal show={this.state.submited} backdropClick={this.submitedHandler.bind(this)}>
+                <Modal show={this.props.submited} backdropClick={this.submitedHandler.bind(this)}>
                     <p>Pedido enviado com sucesso!</p>
                 </Modal>
             </div>
@@ -221,9 +213,22 @@ class ContactData extends Component {
 
 const mapStoreStateToProps = state =>{
     return {
-        ingredients: state.ingredients,
-        price: state.totalPrice
+        ingredients: state.burger.ingredients,
+        price: state.burger.totalPrice,
+        orders: state.order.orders,
+        loading: state.order.loading,
+        submited: state.order.submited
     };
 };
 
-export default connect(mapStoreStateToProps)(ContactData);
+const  mapStoreDispatchToProps = dispatch =>{
+    return {
+        purchaseEnded:()=>{dispatch(actions.purchaseEnded())},
+        asyncOrder:(order)=>{dispatch(actions.asyncOrder(order))}
+    }
+}
+
+export default withErrorHandler(
+    connect(mapStoreStateToProps, mapStoreDispatchToProps)(ContactData),
+    axios
+);

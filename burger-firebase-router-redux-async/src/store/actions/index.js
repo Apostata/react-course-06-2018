@@ -1,2 +1,2 @@
 export {addIngredient, removeIngredient, asyncIinitIgredients} from './burgerBuilder';
-export {} from './order'
+export {asyncOrder, purchaseEnded} from './order';
