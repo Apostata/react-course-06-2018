@@ -16,6 +16,49 @@ export const asyncOrder = (order)=>{
     }
 };
 
+
+export const asyncFetchOrders = ()=>{
+    return dispatch =>{
+        dispatch(fetchOrdersStart());
+
+        axios.get('/orders.json')
+        .then(response =>{
+            const fetchedOrders = Object.keys(response.data)
+                .reduce((acum, key)=>{
+                    return acum.concat({
+                        ...response.data[key],
+                        id:key
+                    });
+                },[]);
+            
+                dispatch(fetchOrdersSuccess(fetchedOrders));
+        })
+        .catch(error =>{
+            dispatch(fetchOrdersError(error));
+        });
+    }
+};
+
+const fetchOrdersStart = () => {
+    return {
+        type: actionTypes.FETCH_ORDERS_START
+    }
+};
+
+const fetchOrdersSuccess = orders => {
+    return {
+        type: actionTypes.FETCH_ORDERS_SUCCESS,
+        orders
+    }
+};
+
+const fetchOrdersError = error => {
+    return {
+        type: actionTypes.FETCH_ORDERS_ERROR,
+        error
+    }
+};
+
 const purchaseBurgerStart = () =>{
     return {
         type: actionTypes.PURCHASE_START
@@ -30,9 +73,10 @@ const purchaseSuccess = (id, order) =>{
     }
 };
 
-const purchaseError = () =>{
+const purchaseError = error =>{
     return{
-        type: actionTypes.PURCHASE_ERROR
+        type: actionTypes.PURCHASE_ERROR,
+        error
     }
 };
 

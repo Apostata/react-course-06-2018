@@ -1,5 +1,6 @@
 import * as actionTypes from '../actions/actionsTypes';
 import INGREDIENT_PRICES from '../../json/ingredient_prices.json';
+import updatedObject from '../utility';
 
 const initialState ={
     ingredients: null,
@@ -10,38 +11,33 @@ const initialState ={
 const reducer = (state = initialState, action) => {
     switch(action.type){
         case actionTypes.ADD_INGREDIENT:
-            return{
-                ...state,
-                ingredients:{
-                    ...state.ingredients,
-                    [action.ingredientName]: state.ingredients[action.ingredientName] + 1
-                },
+            const updatedIngredient = {[action.ingredientName]: state.ingredients[action.ingredientName] + 1};
+            const updatedIngredients = updatedObject(state.ingredients, updatedIngredient)
+            const updatedState = {
+                ingredients: updatedIngredients,
                 totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
-            };
+            }
+            return updatedObject(state, updatedState);
         
         case actionTypes.REMOVE_INGREDIENT:
-            return{
-                ...state,
-                ingredients:{
-                    ...state.ingredients,
-                    [action.ingredientName]: state.ingredients[action.ingredientName] - 1
-                },
-                totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
-            };
+            const updatedIng = {[action.ingredientName]: state.ingredients[action.ingredientName] - 1};
+            const updatedIngs = updatedObject(state.ingredients, updatedIng)
+            const updatedSt = {
+                ingredients: updatedIngs,
+                totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
+            }
+            return updatedObject(state, updatedSt);
         
         case actionTypes.SET_INGREDIENTS:
-            return {
-                ...state,
+           
+            return updatedObject(state, {
                 ingredients: action.ingredients,
                 error: false,
                 totalPrice: initialState.totalPrice
-            };
+            });
 
         case actionTypes.INGREDIENTS_ERROR:
-            return{
-                ...state,
-                error: true
-            }
+            return updatedObject(state, {error:true});
 
         default:
             return state;
