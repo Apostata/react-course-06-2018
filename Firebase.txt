@@ -10,8 +10,30 @@ Database:
     DELETE
 
 Authentication:
-    Signup:
+    Signup: (por email e senha)
         endpoint: https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=[API_KEY]
     
-    Signin:
+    Signin: (por email e senha)
         endpoint: https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=[API_KEY]
+
+
+    Dados retornados pelo signup:
+        {
+            "kind": "identitytoolkit#SignupNewUserResponse",
+            "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZmNTRmZjM0MTFiZmMwMDJiYTBjZDAwNzA2YmEzYmM4NTBiZWIwMmIifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYnVlcmdlci1hcHAtYjBjMDEiLCJhdWQiOiJidWVyZ2VyLWFwcC1iMGMwMSIsImF1dGhfdGltZSI6MTUzMzc2Mjg2NywidXNlcl9pZCI6ImNuZm9wbzhwZVlSRnNTbmI3aEJ1RXpjRTJwTzIiLCJzdWIiOiJjbmZvcG84cGVZUkZzU25iN2hCdUV6Y0UycE8yIiwiaWF0IjoxNTMzNzYyODY3LCJleHAiOjE1MzM3NjY0NjcsImVtYWlsIjoidGVzdGUxQHRlc3RlLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJ0ZXN0ZTFAdGVzdGUuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.fo2Qo0pEx-k_TZBm5hgTQsuZgbiwGOJgYxyy-ofw5hBqa7PNyJj-NhUeSFhrG3MOO7x6L_c0lwzLIdnYrH2TvYinMcXAEwVoCsgtuF_i6UO-dytSN8D8IiPDLsrDnNf9ta8B4XCE5W3JT9khRxN9NvaLin5Ytg4CZGDyThRMCk-VJCap7uaAIKQ7OXrXBf-NGpg0YExyOxUnDBgHJdNIorB3IQ5F019p6I6eN1Vj1s_oBX6m0GDlkXWh18r5l5nuqx_yny5L7htVIaDNyay9QSXA_M7OLSreyueRCa3-q3MkRKpFJjn1a5nPW2VHcGHRspUGuOI95fNoULzT_tdqBg",
+            "email": "teste1@teste.com",
+            "refreshToken": "AGdpqeyJP0li7kSNBgSYghijXP7TWt_dbJt70NmwZVT1J5fxbzrLg_NwGAvbLwOuiMTUSFjFekzpHb5PltMOjGHqAmTyGcBbBVIGEnjxjgtQU9pAzzYuYKufgKpcH2aJAbmr1wZ6XryDOqeWZG8lcb01vB4STge7g9N5DDpUZ3gExvQPHL8VCOkevLhDIPjaXyZ9aupTZXV92JxpYtdvjZHS-OT5-1Eojw",
+            "expiresIn": "3600",
+            "localId": "cnfopo8peYRFsSnb7hBuEzcE2pO2"
+        }
+    Dados retornados pelo signin:
+        {
+            "kind": "identitytoolkit#VerifyPasswordResponse",   //tipo de autenticação
+            "localId": "KZA6OJfwD7Sfbofsh8jp3qZ3tMC3",          //id do usuário retornado
+            "email": "teste@teste.com",
+            "displayName": "",
+            "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZmNTRmZjM0MTFiZmMwMDJiYTBjZDAwNzA2YmEzYmM4NTBiZWIwMmIifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYnVlcmdlci1hcHAtYjBjMDEiLCJhdWQiOiJidWVyZ2VyLWFwcC1iMGMwMSIsImF1dGhfdGltZSI6MTUzMzc2MjM2MCwidXNlcl9pZCI6IktaQTZPSmZ3RDdTZmJvZnNoOGpwM3FaM3RNQzMiLCJzdWIiOiJLWkE2T0pmd0Q3U2Zib2ZzaDhqcDNxWjN0TUMzIiwiaWF0IjoxNTMzNzYyMzYwLCJleHAiOjE1MzM3NjU5NjAsImVtYWlsIjoidGVzdGVAdGVzdGUuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInRlc3RlQHRlc3RlLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.tFLV2N3sk5CX2D8Au0Z7S4kMAOeTqMHBGvm3VS6MhDYgPobfI9t0ycfDv84YMu4ww0WvwgwjnXzFHZnTgvYYMnN61Ec895ggslv74BEDs88l8LRW0QNNAfs28qPnn6HO5aTXaFzrPMlsA8J4jtVH2__V4WF-2A78JzdABnyJ4jYhneGdzeTMqpouaS7PByhAeMjlY-4ejPnapeETA2kHR3p0dK-W-IkPgo5YqzPIBkb8ILMukcCDKFTjEkYD1AMzOnfiU11Vv1jIsguuWLCdMYEohrULZjWPt8cKL49OcaBlxLcGRJoHvwLtHt-MV1k_5KevbBmkphpWUycxfF049Q",
+            "registered": true,
+            "refreshToken": "AGdpqezAZ3bV650T7frrHEOWALcxSc2eNVl_LObJH9lAxQWgVsa6fiZvsGxLHz_Sw3RW1FT0EHkZxDH35NZY9SsHVILRqcZQb8hrP27w-Ixqf0t-llzpghexKznQq9yEzSA9DYwv1pWHViyujRlKcRiUSWfhofjXniYVfewZRFl3a4zKg9JpMNYNoxSiHyhKCYZ93jXDpPSvSnZuhq1vQetO0otUYhvafQ",
+            "expiresIn": "3600"
+        }
