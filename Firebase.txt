@@ -1,0 +1,17 @@
+Database:
+    Criar o banco de dados 
+    o endpoint será https://[NOME DA APPLICAÇÃO].firebaseio.com/
+
+    Métodos:
+    GET
+    POST
+    PUT     - atualiza com referência a entidade completa normalmente, Exemplo: put('/usuario/1234') -> {'id': 1234, 'name': 'Joao', 'idade': 25, 'documento': '123.321.12-X'}
+    PATCH   - atualiza filhos específicos da entidade, exemplo: patch('/usuario/1234') -> {'name': 'João'}
+    DELETE
+
+Authentication:
+    Signup:
+        endpoint: https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=[API_KEY]
+    
+    Signin:
+        endpoint: https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=[API_KEY]
