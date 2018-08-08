@@ -1,5 +1,6 @@
 import * as actionTypes from './actionsTypes';
 import axios from 'axios';
+import API_KEY from '../apiKey';
 
 export const asyncAuth = (email, password, isSignup) =>{
     return dispatch => {//redux thunk
@@ -9,8 +10,7 @@ export const asyncAuth = (email, password, isSignup) =>{
             password: password,
             returnSecureToken: true
         };
-        const API_KEY = "AIzaSyDOS0kiI8kBhQn8uDfHKtM1XQ6I0oFDIdc";
-
+        
         let url = `https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${API_KEY}`;
        
         if(!isSignup){
