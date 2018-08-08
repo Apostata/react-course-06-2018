@@ -153,12 +153,14 @@ class Auth extends Component {
     }
 };
 
-// const mapStoreStateToProps = state =>{
-//     return{
-//         loading: state.login.loading,
-//         isValid: state.login.isValid
-//     }
-// };
+const mapStoreStateToProps = state =>{
+    return{
+        loading: state.auth.loading,
+        token: state.auth.token,
+        userId: state.auth.userId,
+        error: state.auth.error
+    }
+};
 
 const mapStoreDispatchToProps = dispatch =>{
     return{
@@ -170,4 +172,4 @@ const mapStoreDispatchToProps = dispatch =>{
 //     connect(null, mapStoreDispatchToProps)(Login),
 //     axios
 // );
-export default connect(null, mapStoreDispatchToProps)(Auth)
+export default connect(mapStoreStateToProps, mapStoreDispatchToProps)(Auth)
