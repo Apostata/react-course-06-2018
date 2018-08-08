@@ -1,0 +1,43 @@
+@import '../../../../sass/base';
+
+.NavigationItem{
+    margin: 0;
+    box-sizing: border-box;
+    display: flex;
+    height: 100%;
+    align-items: center;
+
+    @media screen and (min-width:500px){
+        margin: 10px 0;
+        display: block;
+        width: auto;
+    }
+
+    a{
+        
+        color: map-get($cores, 'marrom-claro');
+        text-decoration: none;
+        height: 100%;
+        padding: 16px 10px;
+        border-bottom: 4px solid transparent;
+        box-sizing: border-box;
+        display: block;
+        transition: all 0.3s ease-in-out;
+
+        @media screen and (min-width:500px){
+            
+            width: 100%;
+        }
+
+        &:hover, &:active, &.active{
+            
+            color: map-get($cores, 'azul-claro');
+
+            @media screen and (min-width:500px){
+                background-color: map-get($cores, 'marrom-medio');
+                color: map-get($cores, 'branco');
+                border-bottom: 4px solid map-get($cores, 'azul-claro');
+            }
+        }
+    }
+}
