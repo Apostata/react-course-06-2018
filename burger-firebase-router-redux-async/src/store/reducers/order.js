@@ -4,18 +4,21 @@ const initialState ={
     orders:[],
     loading: false,
     submited: false,
+};
+
+const purchaseBurgerStart = (state, action) =>{
+    const newOrder = updatedObject(action.order, { id: action.id}); 
+    return updatedObject (state, {loading:false, orders: state.orders.concat(newOrder)});
 }
 
 const reducer = (state=initialState, action)=>{
     switch(action.type){
         case actionsTypes.PURCHASE_START:
-        return updatedObject (state, {loading:true});
+            return updatedObject (state, {loading:true});
 
         case actionsTypes.PURCHASE_SUCCESS:
-            const newOrder = updatedObject(action.order, { id: action.id});
-               
-            return updatedObject (state, {loading:false, orders: state.orders.concat(newOrder)});
-    
+            return purchaseBurgerStart(state, action);
+        
         case actionsTypes.PURCHASE_ERROR:
             return updatedObject (state, {loading:false});
         
@@ -29,7 +32,7 @@ const reducer = (state=initialState, action)=>{
             return updatedObject (state, {loading:true});
 
         case actionsTypes.FETCH_ORDERS_SUCCESS:
-        return updatedObject (state, {loading: false, orders: action.orders});
+            return updatedObject (state, {loading: false, orders: action.orders});
             
         case actionsTypes.FETCH_ORDERS_ERROR:
             return updatedObject (state, {loading:false});
