@@ -20,6 +20,7 @@ export const asyncAuth = (email, password, isSignup) =>{
         axios.post(url, authData)
             .then(response=>{
                 dispatch(authSuccess(response.data.idToken, response.data.localId));
+                dispatch(asyncCheckAuthTimeout(response.data.expiresIn))
             })
             .catch(error=>{
                 console.log(error);
@@ -28,11 +29,26 @@ export const asyncAuth = (email, password, isSignup) =>{
     }
 };
 
+export const asyncCheckAuthTimeout = (expirationTime) =>{
+    return dispatch =>{
+        setTimeout(()=>{
+            //Loagar quanto o tempo de expiração do token acabar (1h)
+            dispatch(logout());
+        }, expirationTime * 1000)
+    }
+};
+
 export const authStart = () =>{
     return {
         type: actionTypes.AUTH_START
     }
 };
+
+export const logout = () => {
+    return {
+        type: actionTypes.AUTH_LOGOUT
+    }
+}
 
 const authSuccess = (token, userId) =>{
     return {

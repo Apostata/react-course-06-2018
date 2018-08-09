@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
-//import axios from '../../axios-create-user';
-//import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import styles from './Auth.scss';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
 import * as actions from '../../store/actions/index';
+import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 class Auth extends Component {
@@ -156,13 +155,18 @@ class Auth extends Component {
             errorMessage = <p className={styles.ErrorMessage}>{this.props.error.message}</p>
         }
 
-        return (
+        let isAuthenticated = <Redirect to="/" />;
+
+        if (!this.props.isAuthenticated){
+            isAuthenticated =
             <div className={styles.Auth}>
                 {form}
                 <Button classe="Danger" clicked={this.switchAuthModeHandler.bind(this)}>SWITCH TO {this.state.isSignup ? 'SIGNIN' : 'SIGNUP'}</Button>
                 {errorMessage}
             </div>
-        )
+        }
+
+        return isAuthenticated;
 
     }
 };
@@ -170,7 +174,8 @@ class Auth extends Component {
 const mapStoreStateToProps = state =>{
     return{
         loading: state.auth.loading,
-        error: state.auth.error
+        error: state.auth.error,
+        isAuthenticated: state.auth.token !==  null
     }
 };
 

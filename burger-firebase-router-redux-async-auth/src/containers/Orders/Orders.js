@@ -11,7 +11,7 @@ import {connect} from 'react-redux';
 class Orders extends Component {
    
     componentDidMount(){
-        this.props.asyncFetchOrders();
+        this.props.asyncFetchOrders(this.props.token);
     }
 
     render(){
@@ -38,13 +38,14 @@ class Orders extends Component {
 const mapSroteStateToProps = state => {
     return{
         orders: state.order.orders,
-        loading:state.order.loading
+        loading:state.order.loading,
+        token: state.auth.token
     }
 };
 
 const mapStoreDispatchToProps = dispatch =>{
     return{
-        asyncFetchOrders: () => dispatch(actions.asyncFetchOrders())
+        asyncFetchOrders: (token) => dispatch(actions.asyncFetchOrders(token))
     }
 };
 

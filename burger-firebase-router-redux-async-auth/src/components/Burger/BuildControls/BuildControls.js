@@ -22,7 +22,7 @@ const buildControls = (props) =>(
             className={styles.OrderButton}
             disabled={!props.purchasable}
             onClick={props.orded}
-        >PEDIR</button>
+        >{props.isAuth? 'PEDIR' : 'REGISTRAR/ENTRAR'}</button>
     </div>
 );
 export default buildControls;

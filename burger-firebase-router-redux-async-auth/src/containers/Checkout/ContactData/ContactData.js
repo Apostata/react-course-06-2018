@@ -110,7 +110,7 @@ class ContactData extends Component {
             price: this.props.price,
             orderData: formData
         };
-        this.props.asyncOrder(order);
+        this.props.asyncOrder(order, this.props.token);
     }
     
 
@@ -217,14 +217,15 @@ const mapStoreStateToProps = state =>{
         price: state.burger.totalPrice,
         orders: state.order.orders,
         loading: state.order.loading,
-        submited: state.order.submited
+        submited: state.order.submited,
+        token: state.auth.token
     };
 };
 
 const  mapStoreDispatchToProps = dispatch =>{
     return {
         purchaseEnded:()=>{dispatch(actions.purchaseEnded())},
-        asyncOrder:(order)=>{dispatch(actions.asyncOrder(order))}
+        asyncOrder:(order, token)=>{dispatch(actions.asyncOrder(order, token))}
     }
 }
 

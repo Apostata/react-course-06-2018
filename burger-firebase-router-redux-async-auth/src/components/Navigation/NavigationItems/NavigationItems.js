@@ -5,8 +5,8 @@ import styles from './NavigationItems.scss';
 const navigationItems = (props) => (
     <ul className={styles.NavigationItems}>
         <NavigationItem link="/" exact>BurgerBuilder</NavigationItem>
-        <NavigationItem link="/Orders">Orders</NavigationItem>
-        <NavigationItem link="/Auth">Authenticate</NavigationItem>
+        <NavigationItem link="/orders">Orders</NavigationItem>
+        {props.auth ? <NavigationItem link="/logout">Logout</NavigationItem> : <NavigationItem link="/Auth">Authenticate</NavigationItem>}
     </ul>
 );
 

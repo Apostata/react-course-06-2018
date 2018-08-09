@@ -1,11 +1,11 @@
 import * as actionTypes from '../actions/actionsTypes';
 import axios from '../../axios-orders';
 
-export const asyncOrder = (order)=>{
+export const asyncOrder = (order, token)=>{
     return dispatch =>{
         dispatch(purchaseBurgerStart());
 
-        axios.post('/orders.json', order)  //.json por conta do firebase
+        axios.post(`/orders.json?auth=${token}`, order)  //.json por conta do firebase
             .then(response =>{
                 dispatch(purchaseSubmited());
                 dispatch(purchaseSuccess(response.data.name, order));                
@@ -17,11 +17,11 @@ export const asyncOrder = (order)=>{
 };
 
 
-export const asyncFetchOrders = ()=>{
+export const asyncFetchOrders = (token)=>{
     return dispatch =>{
         dispatch(fetchOrdersStart());
 
-        axios.get('/orders.json')
+        axios.get(`/orders.json?auth=${token}`)
         .then(response =>{
             const fetchedOrders = Object.keys(response.data)
                 .reduce((acum, key)=>{
