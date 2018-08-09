@@ -23,7 +23,7 @@ export const asyncAuth = (email, password, isSignup) =>{
             })
             .catch(error=>{
                 console.log(error);
-                dispatch(authError(error));
+                dispatch(authError(error.response.data.error));
             });
     }
 };

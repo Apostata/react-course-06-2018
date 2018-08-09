@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import styles from './Auth.scss';
-//import Spinner from '../../components/UI/Spinner/Spinner';
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 import * as actions from '../../store/actions/index';
 import {connect} from 'react-redux';
@@ -139,16 +139,30 @@ class Auth extends Component {
             );
         });
 
+        let form = <Spinner />;
+        
+        if(!this.props.loading){
+            form = 
+            <form onSubmit={(event) => this.submitedHandler(event)}>
+                {outputElements}
+                <Button classe="Success">SUBMIT</Button>
+            </form>
+            
+        }
+
+        let errorMessage = null;
+
+        if(this.props.error){
+            errorMessage = <p className={styles.ErrorMessage}>{this.props.error.message}</p>
+        }
 
         return (
             <div className={styles.Auth}>
-                <form onSubmit={(event) => this.submitedHandler(event)}>
-                    {outputElements}
-                    <Button classe="Success">SUBMIT</Button>
-                </form>
+                {form}
                 <Button classe="Danger" clicked={this.switchAuthModeHandler.bind(this)}>SWITCH TO {this.state.isSignup ? 'SIGNIN' : 'SIGNUP'}</Button>
-            </div>    
-        );
+                {errorMessage}
+            </div>
+        )
 
     }
 };
@@ -156,8 +170,6 @@ class Auth extends Component {
 const mapStoreStateToProps = state =>{
     return{
         loading: state.auth.loading,
-        token: state.auth.token,
-        userId: state.auth.userId,
         error: state.auth.error
     }
 };
@@ -168,8 +180,4 @@ const mapStoreDispatchToProps = dispatch =>{
     }
 }
 
-// export default withErrorHandler(
-//     connect(null, mapStoreDispatchToProps)(Login),
-//     axios
-// );
 export default connect(mapStoreStateToProps, mapStoreDispatchToProps)(Auth)
