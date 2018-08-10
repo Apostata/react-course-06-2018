@@ -55,3 +55,21 @@ Database:
                 "refreshToken": "AGdpqezAZ3bV650T7frrHEOWALcxSc2eNVl_LObJH9lAxQWgVsa6fiZvsGxLHz_Sw3RW1FT0EHkZxDH35NZY9SsHVILRqcZQb8hrP27w-Ixqf0t-llzpghexKznQq9yEzSA9DYwv1pWHViyujRlKcRiUSWfhofjXniYVfewZRFl3a4zKg9JpMNYNoxSiHyhKCYZ93jXDpPSvSnZuhq1vQetO0otUYhvafQ",
                 "expiresIn": "3600"
             }
+
+    Criando um index no firebase:
+        Ordenar orders e buscar por id
+        Regras:
+        
+        {
+            "rules": {
+                "ingredients":{
+                    ".read": true,
+                    ".write": true,
+                },
+                "orders":{
+                    ".read":"auth != null",
+                    ".write": "auth != null",
+                    ".indexOn":["userId"]
+                }
+            }
+        }

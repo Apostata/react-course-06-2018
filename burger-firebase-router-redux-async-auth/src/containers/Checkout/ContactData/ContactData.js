@@ -108,7 +108,8 @@ class ContactData extends Component {
         const order = {
             ingredients: this.props.ingredients,
             price: this.props.price,
-            orderData: formData
+            orderData: formData,
+            userId: this.props.userId
         };
         this.props.asyncOrder(order, this.props.token);
     }
@@ -218,7 +219,8 @@ const mapStoreStateToProps = state =>{
         orders: state.order.orders,
         loading: state.order.loading,
         submited: state.order.submited,
-        token: state.auth.token
+        token: state.auth.token,
+        userId: state.auth.userId
     };
 };
 

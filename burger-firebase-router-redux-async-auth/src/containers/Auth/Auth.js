@@ -161,6 +161,7 @@ class Auth extends Component {
             errorMessage = <p className={styles.ErrorMessage}>{this.props.error.message}</p>
         }
 
+        console.log(this.props.isAuthenticated ,this.props.authRedirectPath);
         let isAuthenticated = <Redirect to={this.props.authRedirectPath} />;
 
         if (!this.props.isAuthenticated){
@@ -181,7 +182,7 @@ const mapStoreStateToProps = state =>{
     return{
         loading: state.auth.loading,
         error: state.auth.error,
-        isAuthenticated: state.auth.token !==  null,
+        isAuthenticated: state.auth.token !== null,
         buildingBurger: state.burger.building,
         authRedirectPath: state.auth.authRedirectPath
     }

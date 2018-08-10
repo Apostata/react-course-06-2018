@@ -396,3 +396,51 @@ Passando dados entre páginas aninhadas:
 
 Links uteis:
     React Router Docs: https://reacttraining.com/react-router/web/guides/philosophy
+
+React connet redux em um componente que também usa rotas:
+um exemplo é usar rotas e connectar a store no App.js com withRouter,
+já que neste caso não esta dentro de rota alguma
+
+...
+import {Route, Switch, withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
+...
+
+class App extends Component {
+
+  componentDidMount(){
+    this.props.checkAuthState();
+  }
+
+  render() {
+    let routes =(
+      <Switch>
+        <Route path="/auth" component={Auth} />
+        <Route path="/" exact component={BurgerBuilder} />
+      </Switch>
+    );
+
+    if(this.props.isAuthenticated){
+      routes = (
+        <Switch>
+          <Route path="/checkout" component={Checkout} />
+          <Route path="/orders" component={Orders} />
+          <Route path="/logout" component={Logout} />
+          <Route path="/" exact component={BurgerBuilder} />
+        </Switch>
+      );
+    }
+
+    return (
+        <div>
+          <Layout>
+              {routes}
+          </Layout>
+        </div>
+    );
+  }
+}
+
+...
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+ 

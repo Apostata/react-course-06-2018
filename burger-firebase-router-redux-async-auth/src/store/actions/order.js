@@ -17,11 +17,11 @@ export const asyncOrder = (order, token)=>{
 };
 
 
-export const asyncFetchOrders = (token)=>{
+export const asyncFetchOrders = (token, userId)=>{
     return dispatch =>{
         dispatch(fetchOrdersStart());
-
-        axios.get(`/orders.json?auth=${token}`)
+        const queryParams = `?auth${token}&orderBy="userId"&equalTo="${userId}"`;
+        axios.get(`/orders.json${queryParams}`)
         .then(response =>{
             const fetchedOrders = Object.keys(response.data)
                 .reduce((acum, key)=>{

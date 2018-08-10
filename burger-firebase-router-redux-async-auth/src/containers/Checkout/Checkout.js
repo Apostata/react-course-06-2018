@@ -17,6 +17,7 @@ class Checkout extends Component{
     }
 
     render(){
+        console.log(this.props.ingredients)
         let summary = <Redirect to="/" />;
 
         if(this.props.ingredients){
