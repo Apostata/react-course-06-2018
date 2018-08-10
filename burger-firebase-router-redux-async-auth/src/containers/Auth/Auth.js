@@ -42,6 +42,12 @@ class Auth extends Component {
         },
         isSignup: true
     }
+    
+    componentDidMount(){
+        if(!this.props.buildingBurger && this.props.authRedirectPath !== "/"){
+            this.props.onSetAuthRedirectPath('/');
+        }
+    }
 
     submitedHandler(e){
         e.preventDefault();
@@ -155,7 +161,7 @@ class Auth extends Component {
             errorMessage = <p className={styles.ErrorMessage}>{this.props.error.message}</p>
         }
 
-        let isAuthenticated = <Redirect to="/" />;
+        let isAuthenticated = <Redirect to={this.props.authRedirectPath} />;
 
         if (!this.props.isAuthenticated){
             isAuthenticated =
@@ -175,13 +181,16 @@ const mapStoreStateToProps = state =>{
     return{
         loading: state.auth.loading,
         error: state.auth.error,
-        isAuthenticated: state.auth.token !==  null
+        isAuthenticated: state.auth.token !==  null,
+        buildingBurger: state.burger.building,
+        authRedirectPath: state.auth.authRedirectPath
     }
 };
 
 const mapStoreDispatchToProps = dispatch =>{
     return{
-        asyncAuth: (email, password, isSignup) => dispatch(actions.asyncAuth(email, password, isSignup)) 
+        asyncAuth: (email, password, isSignup) => dispatch(actions.asyncAuth(email, password, isSignup)), 
+        onSetAuthRedirectPath: path => dispatch(actions.setAuthRedirectPath(path))
     }
 }
 

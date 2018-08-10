@@ -26,6 +26,8 @@ Database:
         //leitura e gravação publica para ingredients as não para orders( precisa de autenticação)
 
     Authentication:
+        Link Útil: https://firebase.google.com/docs/reference/rest/auth/
+
         Signup: (por email e senha)
             endpoint: https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=[API_KEY]
         

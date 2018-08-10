@@ -1,0 +1,26 @@
+No caso do Burger app mé necessário pegar do servidor o
+tempo de expiração do token.
+No caso retorna com o response.data.expiresIn e tem o valor de 3600
+
+para transformarmos em uma data válida para que de fato ele possa ser atualizado
+na localstorage, é necessário guarda-lo com uma data válida:
+
+no JS quando cria um objeto de data, ele retorna o valor da data atual:
+
+const dataAtual = new Date();
+    retorna algo parecido com: 
+        Fri Aug 10 2018 11:18:47 GMT-0300 (Horário Padrão de Brasília)
+
+porém precisamos transformar a data atual em millisegundos para poder somar
+ao tempo de expiração do token.
+então no caso então 
+    const dataAtual = new Date().getTime();
+    retorn algo parecido com:
+        1533910727000
+
+então é necessário transformar a resposta do firebase 3600 em millisegundos
+    const firebaseMs = 3600 * 1000
+
+somente então podemos retornar a nova data de exporação do token:
+
+ const dataDeExpriracao = new Date(dataAtual + firebaseMs);

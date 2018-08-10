@@ -1,5 +1,8 @@
 import React, { Component} from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Route, Switch, withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
+import * as actions from './store/actions/index';
+
 import Layout from './containers/Layout/Layout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 import Checkout from './containers/Checkout/Checkout';
@@ -11,9 +14,7 @@ import Logout from  './containers/Auth/Logout/Logout';
 class App extends Component {
 
   componentDidMount(){
-    setTimeout(()=>{
-      this.setState({show:false});
-    }, 5000);
+    this.props.checkAuthState();
   }
 
   render() {
@@ -33,4 +34,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch =>{
+  return{
+    checkAuthState: () => dispatch(actions.checkAuthState())
+  }
+};
+
+export default withRouter(connect(null, mapDispatchToProps)(App));
