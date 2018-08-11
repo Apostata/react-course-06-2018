@@ -160,17 +160,16 @@ class Auth extends Component {
         if(this.props.error){
             errorMessage = <p className={styles.ErrorMessage}>{this.props.error.message}</p>
         }
+        
+        let isAuthenticated = (
+        <div className={styles.Auth}>
+            {form}
+            <Button classe="Danger" clicked={this.switchAuthModeHandler.bind(this)}>SWITCH TO {this.state.isSignup ? 'SIGNIN' : 'SIGNUP'}</Button>
+            {errorMessage}
+        </div>);
 
-        console.log(this.props.isAuthenticated ,this.props.authRedirectPath);
-        let isAuthenticated = <Redirect to={this.props.authRedirectPath} />;
-
-        if (!this.props.isAuthenticated){
-            isAuthenticated =
-            <div className={styles.Auth}>
-                {form}
-                <Button classe="Danger" clicked={this.switchAuthModeHandler.bind(this)}>SWITCH TO {this.state.isSignup ? 'SIGNIN' : 'SIGNUP'}</Button>
-                {errorMessage}
-            </div>
+        if (this.props.isAuth){
+            isAuthenticated = <Redirect to={this.props.authRedirectPath} />;
         }
 
         return isAuthenticated;
@@ -182,7 +181,7 @@ const mapStoreStateToProps = state =>{
     return{
         loading: state.auth.loading,
         error: state.auth.error,
-        isAuthenticated: state.auth.token !== null,
+        isAuth: state.auth.token !== null, 
         buildingBurger: state.burger.building,
         authRedirectPath: state.auth.authRedirectPath
     }
@@ -193,6 +192,6 @@ const mapStoreDispatchToProps = dispatch =>{
         asyncAuth: (email, password, isSignup) => dispatch(actions.asyncAuth(email, password, isSignup)), 
         onSetAuthRedirectPath: path => dispatch(actions.setAuthRedirectPath(path))
     }
-}
+} 
 
 export default connect(mapStoreStateToProps, mapStoreDispatchToProps)(Auth)
