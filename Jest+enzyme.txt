@@ -1,0 +1,91 @@
+Testes unitários com Jest e Enzyme
+
+A biblioteca de validação neste caso é o Jest
+Enzyme é a biblioteca utilitária para teste com React
+
+React-create-app já vem com o Jest instalado
+(Jest é do facebook assim como o React)
+
+é necessário instalar o enzyme e seus plugins
+
+npm install --save enzyme
+npm install --save enzyme-adapter-react-16
+//no caso a versão que estou usando
+
+Um exemplo de um Componente testado:
+
+    import React from 'react';
+    import { configure, shallow } from 'enzyme';
+    import Adapter from 'enzyme-adapter-react-16';
+    import NavigationItems from './NavigationItems';
+    import NavigationItem from './NavigationItem/NavigationItem';
+
+    //conecta o enzyme com o Jest
+    configure({adapter: new Adapter()});
+
+    describe('<NavigationItems />', ()=>{
+        let wrapper;
+        beforeEach(()=>{
+            wrapper = shallow(<NavigationItems />); 
+            //shallow testa apenas este compoenente
+        });
+
+        it('should render 2 <NavigationItem /> elements if not authenticated', ()=>{
+            expect(wrapper.find(NavigationItem)).toHaveLength(2);
+        });
+
+        it('should render 3 <NavigationItem /> elements if authenticated', ()=>{
+            wrapper.setProps({auth:true}); 
+            //seta a prop auth para true, do compoenente <NavigationItems />
+            expect(wrapper.find(NavigationItem)).toHaveLength(3);
+        });
+    });
+
+Exemplo de teste no reducer:
+    import reducer from './auth';
+    import * as actionTypes from '../actions/actionsTypes';
+
+    describe('auth reducer', ()=>{
+        it('should return initial state', ()=>{
+            expect(reducer(undefined, {})).toEqual({
+                token: null,
+                userId: null,
+                error: null,
+                loading: false,
+                authRedirectPath: "/"
+            })
+        });
+
+        it('should store the token upon login', () => {
+            expect(reducer(
+                {
+                    token: null,
+                    userId: null,
+                    error: null,
+                    loading: false,
+                    authRedirectPath: "/"
+                },
+                {
+                    type: actionTypes.AUTH_SUCCESS,
+                    token: 'algum-token',
+                    userId: 'algum-id',
+                    error: null,
+                    loading: false,
+                    authRedirectPath: "/"
+                }
+            ))
+            .toEqual(
+                {
+                    token: 'algum-token',
+                    userId: 'algum-id',
+                    error: null,
+                    loading: false,
+                    authRedirectPath: "/"
+                }
+            )
+        });
+    });
+
+Links Úteis:
+    Enzyme API: http://airbnb.io/enzyme/docs/api/
+    Jest Docs: https://facebook.github.io/jest/

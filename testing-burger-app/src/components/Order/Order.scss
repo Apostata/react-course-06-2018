@@ -1,0 +1,10 @@
+@import '../../sass/base';
+
+.Order{
+    width: 80%;
+    border: 1px solid map-get($cores, 'cinza-claro');
+    box-shadow: 0 2px 3px map-get($cores, 'cinza-medio');
+    padding: 10px;
+    margin: 10px auto;
+    box-sizing: border-box;
+}
