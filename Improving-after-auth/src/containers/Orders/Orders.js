@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 class Orders extends Component {
    
     componentDidMount(){
+        //console.log(this.props.userId)
         this.props.asyncFetchOrders(this.props.token, this.props.userId);
     }
 
@@ -46,7 +47,7 @@ const mapSroteStateToProps = state => {
 
 const mapStoreDispatchToProps = dispatch =>{
     return{
-        asyncFetchOrders: (token) => dispatch(actions.asyncFetchOrders(token))
+        asyncFetchOrders: (token, userId) => dispatch(actions.asyncFetchOrders(token, userId))
     }
 };
 

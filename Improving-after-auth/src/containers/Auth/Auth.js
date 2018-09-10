@@ -4,6 +4,8 @@ import Button from '../../components/UI/Button/Button';
 import styles from './Auth.scss';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
+import {updatedObject, checkValidaty} from '../../utils/utility';
+
 import * as actions from '../../store/actions/index';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -69,54 +71,22 @@ class Auth extends Component {
 
     inputChangeHandler(e, inputId){
         
-        const clonedForm = {
-            ...this.state.controls,
-
-            [inputId]:{
-                ...this.state.controls[inputId],
+        const clonedForm = updatedObject(this.state.controls, {
+            [inputId]: updatedObject(this.state.controls[inputId],{
                 value: e.target.value,
-                valid: this.checkValidaty(
+                valid: checkValidaty(
                     e.target.value,
                     this.state.controls[inputId].validation
                 ),
                 touched: true
-            }           
-        };
+            })     
+        })
+        
 
         this.setState({
             controls: clonedForm,
         });
         
-    }
-
-    checkValidaty(value, rules){
-        let isValid = true;
-
-        if(rules.required){
-            isValid = value.trim() !== '' && isValid;
-        }
-
-        if(rules.minLength){
-            isValid = value.length >= rules.minLength && isValid;
-        }
-
-        if(rules.maxLength){
-            isValid = value.length >= rules.minLength && isValid;
-        }
-
-        if(rules.isEmail){
-            const regex = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-            isValid = regex.test(value) && isValid
-        }
-        
-        if(rules.isNumeric){
-            if (rules.isNumeric) {
-                const regex = /^\d+$/;
-                isValid = regex.test(value) && isValid
-            }
-        }
-
-        return isValid;
     }
 
     render(){

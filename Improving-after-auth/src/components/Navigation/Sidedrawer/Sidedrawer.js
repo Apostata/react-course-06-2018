@@ -8,7 +8,7 @@ const sidedrawer = (props) =>{
     return (
         <Fragment>
             <Backdrop show={props.show} click={props.toggleSidedrawer} />
-            <div className={[styles.Sidedrawer, props.show ? styles.Open : null].join(" ")}>
+            <div className={[styles.Sidedrawer, props.show ? styles.Open : null].join(" ")} onClick={props.toggleSidedrawer}>
                 <div className={styles.Logo}>
                     <Logo />
                 </div>

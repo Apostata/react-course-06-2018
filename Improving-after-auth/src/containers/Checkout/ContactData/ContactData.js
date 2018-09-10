@@ -9,6 +9,8 @@ import * as actions from '../../../store/actions/index';
 import axios from '../../../axios-orders';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 
+import {updatedObject, checkValidaty} from '../../../utils/utility';
+
 import styles from './ContactData.scss';
 
 class ContactData extends Component {
@@ -122,18 +124,16 @@ class ContactData extends Component {
 
     inputChangeHandler(e, inputId){
         
-        const clonedForm = {
-            ...this.state.orderForm           
-        };
+        const clonedSelectedElement = updatedObject(this.state.orderForm[inputId],{
+            value: e.target.value,
+            valid: checkValidaty(e.target.value, this.state.orderForm[inputId].validation),
+            touched: true
+        });
 
-        const clonedSelectedElement = {
-            ...clonedForm[inputId]   
-        };
+        const clonedForm = updatedObject(this.state.orderForm, {
+            [inputId] : clonedSelectedElement
+        })
 
-        clonedSelectedElement.value = e.target.value;
-        clonedSelectedElement.valid = this.checkValidaty(clonedSelectedElement.value, clonedSelectedElement.validation)
-        clonedSelectedElement.touched = true;
-        clonedForm[inputId] = clonedSelectedElement;
 
         let formIsValid = true;
 
@@ -146,24 +146,6 @@ class ContactData extends Component {
             formIsValid
         });
         
-    }
-
-    checkValidaty(value, rules){
-        let isValid = true;
-
-        if(rules.required){
-            isValid = value.trim() !== '' && isValid;
-        }
-
-        if(rules.minLength){
-            isValid = value.length >= rules.minLength && isValid;
-        }
-
-        if(rules.maxLength){
-            isValid = value.length >= rules.minLength && isValid;
-        }
-
-        return isValid;
     }
 
     render(){
