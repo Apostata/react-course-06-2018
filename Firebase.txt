@@ -73,3 +73,23 @@ Database:
                 }
             }
         }
+
+Hosting:
+    se não tiver instalado no seu pc, instale o firebase tools
+    npm install -g firebase-tools
+
+    então é necessário logar-se ao firebase:
+    firebase login
+
+    firebase init
+
+    selecionar hosting (posicionar com a setas e apertar espaço)
+
+    selecionar o banco de dados,
+    selecionar a pasta publica, no caso do react é a pasta "build"
+    não sobrescrever o index.html
+
+    firebase deploy
+
+
+
