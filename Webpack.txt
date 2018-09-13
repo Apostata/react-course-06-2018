@@ -1,7 +1,159 @@
 Usar uma custom build do webpack para rodar o react
+    Anatomia do webpack:
+        entry -> arquivo(s) de entrada
+        output -> caminho, nome de saida
 
-//Webpack e o Dev server para ambiente de desenvolvimento
-npm install --save-dev webpack webpack-dev-server
+    Pacotes para instalar:
 
-//React, react-dom e router
-npm install --save react react-dom react-router-dom
+        //Webpack e o Dev server para ambiente de desenvolvimento
+        npm install --save-dev webpack webpack-dev-server
+
+        //React, react-dom e router
+        npm install --save react react-dom react-router-dom
+
+
+        //Para transpilar o codigo da versão nova do javascript em es5, o ultimo para habiliar propriedades de classe sem precisar do constructor
+        npm install --save-dev babel-loader babel-core babel-preset-react babel-preset-env babel-preset-stage-2
+
+        //Para transpilar css e usar o postcss para auto prefixing
+        //npm install --save-dev css-loader style-loader postcss-loader autoprefixer
+        OU 
+        //Para transpilar sass 
+        npm install --save-dev css-loader style-loader node-sass sass-loader postcss-loader autoprefixer
+
+        //para transpilar imagens e html
+        npm install --save-dev url-loader file-loader
+
+        //para permitir o uso de code spliting ou lazy load
+        npm install --save-dev babel-plugin-syntax-dynamic-import
+
+        //para injetar scripts no index.html automaticamente
+        npm install --save-dev html-webpack-plugin
+
+    No package.json:
+        criar um script "start":
+
+        "scripts": {
+            ...
+            "start": "webpack-dev-server"
+        },
+
+        irá procurar por um arquivo chamado "webpack.config.js" que deverá ser criado
+
+    Webpack.config.js:
+        em modules, deve ter varias rules uma para cada tipo de arquivo,
+        js e jsx, css, less e sass, imagens
+
+        para as regras de javascript:
+            module:{
+                rules:[
+                    ...
+                    {
+                        text: /\.js$/
+                        loader: 'babel-loader'
+                        exclude: /node_modules/
+                    }
+                ]
+            }
+        
+            exclude é usado para excluir todo o diretório do node_modules estes são codigos de
+            e prontos para uso
+
+            babel-loader irá procurar um arquivo de configuração chamado .babelrc:
+
+                babelrc:
+                    para transpilar os codigos de javascript moderno e outros como typescript ou jsx
+                    para es5:
+
+                    {
+                        "presets":[
+                            ["env", {
+                                "targets":{
+                                    "browsers":[ //pegar browsers que tenham mais de 1% de uso no mercado e as ultimas 2 versões
+                                        "> 1%", 
+                                        "last 2 versions"
+                                    ]
+                                }
+                            }],
+                            "stage-2", //permite setar propriedades se precisar do contructor, como state={...}
+                            "react" //transpilar jsx também
+                        ]
+                    }
+        
+        para as regras de css, less ou sass:
+            as opções de css são para separa-los em modulos com:
+            nomeDaClasse__NomeDoComponente__hash
+
+            module:{
+                rules:[
+                    ...
+                    {
+                        text: /\.css$/
+                        use: [ //usado quando multiplos loaders ou um loader com configuraçãoes para este tipo de arquivo
+                            {loader: 'style-loader'},
+                            {loader: 'css-loader',
+                                options:{
+                                    importLoaders: 2, //quantos loaders rodam antes deste (sass e postcss)
+                                    modules: true,
+                                    localIdentNames: '[name]__[local]__[hash:base64:5]'
+                                }
+                            },
+                            {
+                                loader: 'sass-loader', //para suportar sass
+                            },
+                            {
+                                loader: 'postcss-loader',
+                                options:{
+                                    ident: 'postcss',
+                                    plugins: () => [
+                                        autoprefixer({ //precisa ser importado no inicio do arquivo de configuração
+                                            browsers:[
+                                                "> 1%", 
+                                                "last 2 versions"
+                                            ]
+                                        })
+                                    ]
+                                }
+                            }
+                        ]
+                        
+                    }
+                ]
+            }
+
+        para as regras de imagens e fonts:
+            rules:[
+                ...
+                {
+                    test:/\.(png|jpe?g|gif)$/,
+                    loader: 'url-loader',
+                    options: {
+                        limit: 10000,
+                        name: 'images/[name].[ext]',
+                    },
+                },
+                { 
+                    test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+                    use:[
+                        {
+                            loader: "file-loader",
+                            options:{
+                                name:"[name].[ext]",
+                                outputPath: 'fonts/'
+                            }
+                        }
+                    ]
+                },
+            ]
+        
+        para habilitar o lazyLoading ou code spliting:
+            no babelrc colocar o plugin syntax-dynamic-import:
+            {
+                "presets":[
+                    ...
+                ],
+                "plugins":[
+                    "syntax-dynamic-import"
+                ]
+            }
+        
