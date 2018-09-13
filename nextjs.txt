@@ -1,0 +1,27 @@
+Install it:
+
+npm install --save next react react-dom
+
+and add a script to your package.json like this:
+
+{
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  }
+}
+
+estrutura de pastas para buildar páginas 
+
+pasta pages
+    index.js 
+    pasta rota1
+        index.js
+    pasta rota2
+        index.js
+
+criará os seguintes endpoints:
+/           -> relativo da estrutura de pastas pages/index.js
+/rota1/     -> relativo da estrutura de pastas pages/rota1/index.js
+/rota2/     -> relativo da estrutura de pastas pages/rota2/index.js

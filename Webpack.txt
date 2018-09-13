@@ -156,4 +156,7 @@ Usar uma custom build do webpack para rodar o react
                     "syntax-dynamic-import"
                 ]
             }
+
+            no webpack.config.js:
+            
         
