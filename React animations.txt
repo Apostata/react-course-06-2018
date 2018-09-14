@@ -1,0 +1,161 @@
+para utilizar as animações quando componentes forem montados e desmontados
+
+npm install react-transition-group --save
+
+importando componente:
+import Transition from 'react-transition-group/Transition'
+
+usando:
+    <Transition in={this.state.showBlock} timeout={1000} mountOnEnter unmountOnExit>
+        propriedades:
+           
+            in: o que ele deve observar para alterar os estados, no caso é o stato showBlock
+            timeout: quanto tempo toca do Entered para p Exited ou vice-versa.
+            mountOnEnter, só coloca no DOM o componente filho e inicia as animações	assim que a condição de "in" for true
+            unmountOnExit, só retira do DOM o componente filho e inicia as animações assim que a condição de "in" for false
+            onEnter = {()=>console.log('after in set to true')}
+            onEntering = {()=>console.log('init enter timeout')}
+            onEntered = {()=>console.log('finish enter timeout')}
+            onExit = {()=>console.log('after in set to false')}
+            onExiting = {()=>console.log('init exit timeout')}
+            onExited = {()=>console.log('finish exit timeout')}
+    >
+        {state => {
+            <componenteFilho show={state} />
+            o state pode ser:
+                entering,
+                entered,
+                exiting,
+                exited
+        }}
+    </Transition>
+
+
+exemplo de uso:
+    <Transition in={props.show} timeout={300}  mountOnEnter unmountOnExit>
+        {state => {
+            let classe;
+            if(state === 'entering'){
+                classe = "open";
+            }
+            else if(state === 'exiting'){
+                classe = "close";
+            }
+            else{
+                classe = null;
+            }
+        
+            const classes = [
+                "Modal",
+                classe    
+            ];
+
+            return(
+                <div className={classes.join(' ')}>
+                    <h1>A Modal</h1>
+                    <button className="Button" onClick={props.toggleOpen}>Dismiss</button>
+                </div>
+            );
+        }}
+    </Transition>
+
+Direrentes timeout para entrada e saida
+    <Transition in={props.show} timeout={{enter:400, exit:1000}}  mountOnEnter unmountOnExit>
+
+Tratando estados automáticamente pelo css 
+    import CSSTransition from 'react-transition-group/CSSTransition'
+
+    <CSSTransition
+        in={props.show}
+        timeout={{enter:400, exit:1000}}
+        mountOnEnter
+        unmountOnExit
+        classNames="fade-slide">
+        <div className="Modal">
+            <h1>A Modal</h1>
+            <button className="Button" onClick={props.toggleOpen}>Dismiss</button>
+        </div>
+    </CSSTransition>
+
+    os estados serão trados no css como classes:
+    .fade-slide-enter -> enter
+    .fade-slide-enter-active -> entering
+    .fade-slide-enter-done -> entered
+    .fade-slide-exit -> exit
+    .fade-slide-exit-active -> exiting
+    .fade-slide-exit-done -> exited
+
+    Customizando classes:
+        <CSSTransition
+        in={props.show}
+        timeout={{enter:400, exit:1000}}
+        mountOnEnter
+        unmountOnExit
+        classNames={{
+            enter: '',
+            enterActive: 'open',
+            exit: '',
+            exitActive: 'close',
+            appear: '',
+            appearActive: ''
+        }}>
+
+        ira chamar as class :
+        .Modal.open -> entering
+        .Modal.close -> exiting
+
+Animando itens em lista 
+    É necessário importar p transitionGroup e o transition
+
+    onde seria o container da lista por exemplo uma <ul className="List">, trocar
+    pelo <TransitionGroup component="ul" className="List">
+    
+    então cada item da lista chamado da seguinte maneira:
+    <CSSTransition key={index} classNames="fade" timeout={300}>
+        <li 
+            className="ListItem" 
+            onClick={() => this.removeItemHandler(index)}>{item}
+        </li>
+    </CSSTransition>
+
+    NOTE que no componente CSSTransition não está passando o attributo "in"
+    que é Herdado do seu componente pai TransitionGroup, porém é possível 
+    especificar mesmo assim.
+
+    Exemplo de uso:
+    ...
+    import TransitionGroup from 'react-transition-group/TransitionGroup';
+    import CSSTransition from 'react-transition-group/CSSTransition'
+
+    ...
+    render () {
+        const listItems = this.state.items.map( (item, index) => (
+            <CSSTransition key={index} classNames="fade" timeout={300}>
+                <li 
+                    className="ListItem" 
+                    onClick={() => this.removeItemHandler(index)}>{item}
+                </li>
+            </CSSTransition>
+        ) );
+
+        return (
+            <div>
+                <button className="Button" onClick={this.addItemHandler}>Add Item</button>
+                <p>Click Item to Remove.</p>
+                <TransitionGroup component="ul" className="List">
+                    {listItems}
+                </TransitionGroup>
+            </div>
+        );
+    }
+
+Outras alternativas:
+    More on CSS Transitions: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Transitions/Using_CSS_transitions
+    More on CSS Animations: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Animations/Using_CSS_animations
+    More on ReactTransitionGroup: https://github.com/reactjs/react-transition-group
+    Alternative => React Motion: https://github.com/chenglou/react-motion
+    Alternative => React Move: https://github.com/react-tools/react-move
+    Animating Route Animations: https://github.com/maisano/react-router-transition
+
+merece um estudo melhor:
+react-router-transition     -> animação para troca de rotas -> animateSwitch 

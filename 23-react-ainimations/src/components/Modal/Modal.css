@@ -1,0 +1,104 @@
+.Modal {
+    position: fixed;
+    z-index: 200;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 2px #ccc;
+    background-color: white;
+    padding: 10px;
+    text-align: center;
+    box-sizing: border-box;
+    top: 30%;
+    left: 25%;
+    width: 50%; 
+}
+
+.Modal.open{
+    /* opacity: 1;
+    transform: translateY(0);
+    visibility: visible; */
+    animation: openModal 400ms ease-out forwards;
+}
+
+.Modal.close{
+    animation: closeModal 400ms ease-out forwards;
+}
+
+.fade-slide-enter{ /*Transition component enter*/
+}
+
+.fade-slide-enter-active{ /*Transition component entering*/
+    animation: openModal 400ms ease-out forwards;
+}
+
+.fade-slide-enter-done{ /*Transition component entered*/
+    animation: shake 500ms ease-out forwards;
+}
+
+.fade-slide-exit{ /*Transition component exit*/
+}
+
+.fade-slide-exit-active{ /*Transition component exiting*/
+    animation: closeModal 400ms ease-out forwards;
+}
+
+.fade-slide-exit-done{ /*Transition component exited*/
+}
+
+@keyframes openModal {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%);
+        visibility: hidden;
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: translateY(90%);
+        visibility: visible;
+    }
+
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+    }
+}
+
+@keyframes closeModal {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+        visibility: visible;
+        
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: translateY(60%);
+        visibility: visible;
+    }
+
+    100%{
+        opacity: 0;
+        transform: translateY(-100%);
+        visibility: hidden;
+    }
+}
+
+@keyframes shake {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-15deg);
+    }
+
+    50% {
+        transform: rotate(15deg);
+    }
+
+    100%{
+        transform: rotate(0deg);
+    }
+}
