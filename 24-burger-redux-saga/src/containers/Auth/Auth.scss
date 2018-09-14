@@ -1,0 +1,19 @@
+@import '../../sass/base';
+
+.Auth{
+    margin: 20px auto;
+    width: 80%;
+    text-align: center;
+    box-shadow: 0 2px 3px map-get($cores, 'cinza-medio');
+    border: 1px solid map-get($cores, 'cinza-claro');
+    padding: 10px;
+    box-sizing: border-box;
+
+    @media screen and (max-width: 600px){
+        width:500px;
+    }
+
+    .ErrorMessage{
+       color: darken(map-get($cores, 'vermelho-escuro'), 10%);
+    }
+}

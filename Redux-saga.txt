@@ -1,0 +1,68 @@
+Sagas são funções que não lidam diretamente com a store
+deixando a função do redux como inicial, apenas funções pura e sincronas
+
+na pasta store, criar outra = Sagas
+exemplo:
+    criar um arquivo auth.js
+
+        import { put } from 'redux-saga/effects';
+        import * as actionTypes from '../actions/actionsTypes';
+
+        export function* logoutSaga(action){ //transform a função em um generator
+            yield localStorage.removeItem('token');
+            yield localStorage.removeItem('tokenEpirationDate');
+            yield localStorage.removeItem('userId'); 
+
+            yield put({
+                type: actionTypes.AUTH_LOGOUT
+            })
+        };
+
+    e outro index.js:
+
+        import {takeEvery} from 'redux-saga/effects';
+        import * as actionTypes from '../actions/actionsTypes';
+
+        import { logoutSaga } from './auth';
+
+        export function* watchAuth(){
+            yield takeEvery(actionTypes.AUTH_INITIATE_LOGOUT, logoutSaga);
+        }
+
+    No arquivo de criação da store:
+        import createSagaMiddleware from 'redux-saga';
+
+        //importar os watchers da Sagas:
+        import {watchAuth} from './store/sagas';
+
+        const composeEnhancers = process.env.NODE_env = 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null|| compose;
+
+        const rootReducer = combineReducers({
+            burger: burgerBuilderReducer,
+            order: orderReducer,
+            auth: authReducer
+        });
+
+        //criar o middleware do redux-saga
+        const sagaMiddleware = createSagaMiddleware();
+
+        const store = createStore(
+            rootReducer,
+            composeEnhancers(applyMiddleware(..., sagaMiddleware))
+        );
+
+        sagaMiddleware.run(watchAuth);
+        sagaMiddleware.run(...another);
+
+    async functions com saga:
+
+        export function* initIgredientsSaga(){
+            try{
+                const response = yield axios.get('/ingredients.json');
+                yield put(actions.setIngredients(response.data));
+            }
+            catch(error){
+                yield put (actions.ingredientsError());
+            }
+        }
+

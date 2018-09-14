@@ -1,0 +1,34 @@
+@import '../../../sass/base';
+
+.Input{
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    
+    .Label{
+        font-weight: bold;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .InputElement{
+        outline: none;
+        border: 1px solid map-get($cores, 'cinza-claro');
+        background-color: map-get($cores, 'branco');
+        font: inherit;
+        padding: 6px 10px;
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+
+        &:focus{
+            outline: none;
+            background-color: map-get($cores, 'cinza-claro');
+        }
+    }
+
+    .Invalid{
+        border: solid map-get($cores, 'vermelho-escuro');
+        background-color: map-get($cores, 'vermelho-claro')
+    }
+}
