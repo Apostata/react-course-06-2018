@@ -16,7 +16,8 @@ export const FETCH_ORDERS_START = 'FETCH_ORDERS_START';
 export const FETCH_ORDERS_SUCCESS = 'FETCH_ORDERS_SUCCESS';
 export const FETCH_ORDERS_ERROR = 'FETCH_ORDERS_ERROR';
 //order saga
-export const GET_ORDERS = 'GET_ORDERS';
+export const PURCHASE_ORDERS = 'PURCHASE_ORDERS';
+export const FETCH_ORDERS = 'FETCH_ORDERS';
 
 //login actions
 export const AUTH_START = 'AUTH_START';

@@ -1,14 +1,20 @@
 import axios from 'axios';
 import { delay } from 'redux-saga';
-import { put } from 'redux-saga/effects';
+import { put, call } from 'redux-saga/effects';
 //import * as actionTypes from '../actions/actionsTypes';
 import * as actions from '../actions'
 import API_KEY from '../apiKey';
 
 export function* logoutSaga(){ //transform a função em um generator
-    localStorage.removeItem('token');
-    localStorage.removeItem('tokenEpirationDate');
-    localStorage.removeItem('userId'); 
+    yield call([localStorage, "removeItem"], "token");
+    yield call([localStorage, "removeItem"], "tokenEpirationDate");
+    yield call([localStorage, "removeItem"], "userId");
+
+    //usar o call é mais fácil para testar
+
+    // localStorage.removeItem('token');
+    // localStorage.removeItem('tokenEpirationDate');
+    // localStorage.removeItem('userId'); 
 
     yield put(actions.logoutSuccess())
 };

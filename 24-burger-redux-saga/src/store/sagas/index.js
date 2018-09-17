@@ -1,16 +1,23 @@
-import {takeEvery} from 'redux-saga/effects';
+import {takeEvery, takeLatest, all} from 'redux-saga/effects';
 import * as actionTypes from '../actions/actionsTypes';
 
 import {logoutSaga, checkAuthTimeoutSaga, authSaga, checkAuthStateSaga} from './auth';
 import {initIgredientsSaga} from './burgerBuilder';
-import {asyncOrderSaga} from './order';
+import {asyncOrderSaga, asyncFetchOrdersSaga} from './order';
 //import { asyncAuth } from '../actions';
 
 export function* watchAuth(){
-    yield takeEvery(actionTypes.AUTH_INITIATE_LOGOUT, logoutSaga);
-    yield takeEvery(actionTypes.AUTH_CHECK_TIMEOUT, checkAuthTimeoutSaga);
-    yield takeEvery(actionTypes.AUTH_INIT_CREDENTIALS, authSaga);
-    yield takeEvery(actionTypes.AUTH_CHECK_STATE, checkAuthStateSaga);
+    yield all([
+        takeEvery(actionTypes.AUTH_INITIATE_LOGOUT, logoutSaga),
+        takeEvery(actionTypes.AUTH_CHECK_TIMEOUT, checkAuthTimeoutSaga),
+        takeEvery(actionTypes.AUTH_INIT_CREDENTIALS, authSaga),
+        takeEvery(actionTypes.AUTH_CHECK_STATE, checkAuthStateSaga)
+    ]);
+
+    // yield takeEvery(actionTypes.AUTH_INITIATE_LOGOUT, logoutSaga);
+    // yield takeEvery(actionTypes.AUTH_CHECK_TIMEOUT, checkAuthTimeoutSaga);
+    // yield takeEvery(actionTypes.AUTH_INIT_CREDENTIALS, authSaga);
+    // yield takeEvery(actionTypes.AUTH_CHECK_STATE, checkAuthStateSaga);
 }
 
 export function* watchBurgerBuilder(){
@@ -18,5 +25,8 @@ export function* watchBurgerBuilder(){
 }
 
 export function* watchOrder(){
-    yield takeEvery(actionTypes.GET_ORDERS, asyncOrderSaga);
+    //take takeLatest => pega a ultima ocorrencia mesmo que seja disparados diversas vezes,
+    //pega epenas a ultima
+    yield takeLatest(actionTypes.PURCHASE_ORDERS, asyncOrderSaga);
+    yield takeEvery(actionTypes.FETCH_ORDERS, asyncFetchOrdersSaga);
 }

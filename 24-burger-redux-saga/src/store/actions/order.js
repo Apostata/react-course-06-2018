@@ -1,9 +1,8 @@
 import * as actionTypes from '../actions/actionsTypes';
-import axios from '../../axios-orders';
 
 export const asyncOrder = (order, token)=>{
     return{
-        type:actionTypes.GET_ORDERS,
+        type:actionTypes.PURCHASE_ORDERS,
         order:order,
         token:token
     }
@@ -11,25 +10,11 @@ export const asyncOrder = (order, token)=>{
 
 
 export const asyncFetchOrders = (token, userId)=>{
-    return dispatch =>{
-        dispatch(fetchOrdersStart());
-        const queryParams = `?auth=${token}&orderBy="userId"&equalTo="${userId}"`;
-        axios.get(`/orders.json${queryParams}`)
-        .then(response =>{
-            const fetchedOrders = Object.keys(response.data)
-                .reduce((acum, key)=>{
-                    return acum.concat({
-                        ...response.data[key],
-                        id:key
-                    });
-                },[]);
-            
-                dispatch(fetchOrdersSuccess(fetchedOrders));
-        })
-        .catch(error =>{
-            dispatch(fetchOrdersError(error));
-        });
-    }
+    return{
+        type: actionTypes.FETCH_ORDERS,
+        token: token,
+        userId: userId
+    };
 };
 
 export const fetchOrdersStart = () => {

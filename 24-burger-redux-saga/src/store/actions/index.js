@@ -1,3 +1,3 @@
 export {addIngredient, setIngredients, ingredientsError, removeIngredient, asyncIinitIgredients} from './burgerBuilder';
-export {asyncOrder, asyncFetchOrders, purchaseEnded, purchaseBurgerStart, purchaseError,purchaseSuccess, purchaseSubmited} from './order';
+export {asyncOrder, asyncFetchOrders, fetchOrdersStart, fetchOrdersError, fetchOrdersSuccess, purchaseEnded, purchaseBurgerStart, purchaseError, purchaseSuccess, purchaseSubmited} from './order';
 export {authStart, authSuccess, authError, asyncAuth, logout, setAuthRedirectPath, checkAuthState, logoutSuccess, checkAuthTimeout} from './auth';
