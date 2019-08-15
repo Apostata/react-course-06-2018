@@ -64,3 +64,8 @@ Para melhor performance, é recomendavel usar um useState para cada estdo:
 ...
 ````
 garantindo que só mudará o estado necessário, diferente do modo anterior que todo o o objeto era recriado ao mudar apenas uma propriedade.
+
+
+### Regras para usdo dos hooks
+* Usar hooks apenas em componentes funcionais ou em hooks customizados
+* Usar apenas na raiz do componente ou outro hook
