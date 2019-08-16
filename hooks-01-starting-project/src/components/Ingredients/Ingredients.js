@@ -6,6 +6,7 @@ import Search from './Search';
 
 const Ingredients = () => {
   const [ingredientsState, setIngredientsState] = useState([]);
+  const [filteredState, setFilteredState] = useState([]);
 
   useEffect(()=>{
     fetch('https://react-hooks-update-d4774.firebaseio.com/ingredients.json')
@@ -13,7 +14,6 @@ const Ingredients = () => {
       response => response.json()
     )
     .then( json => {
-      console.log(json)
       const ingredientsArray = [];
 
       for( const key in json){
@@ -24,8 +24,13 @@ const Ingredients = () => {
         })
       }
       setIngredientsState(ingredientsArray);
+      setFilteredState(ingredientsArray);
     })
   }, []);
+
+  useEffect(()=>{
+    console.log('INGREDIENT STATE', ingredientsState)
+  }, [ingredientsState]);
 
   const addIngredient = ingredient => {
     fetch('https://react-hooks-update-d4774.firebaseio.com/ingredients.json', {
@@ -53,13 +58,22 @@ const Ingredients = () => {
     )
   }
 
+  const filteringList = (valor) =>{
+    setFilteredState(() =>{
+        const filtered = ingredientsState.filter(igredient => igredient.title.indexOf(valor) > -1);
+        console.log(filtered);
+        return filtered;
+      }
+    )
+  };
+
   return (
     <div className="App">
       <IngredientForm  onAddIngredient={addIngredient} />
 
       <section>
-        <Search />
-        <IngredientList ingredients={ingredientsState}  onRemoveItem={removeItem}/>
+        <Search applyFilter={filteringList}/>
+        <IngredientList ingredients={filteredState}  onRemoveItem={removeItem}/>
       </section>
     </div>
   );

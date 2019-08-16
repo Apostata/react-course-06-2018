@@ -69,3 +69,22 @@ garantindo que só mudará o estado necessário, diferente do modo anterior que 
 ### Regras para usdo dos hooks
 * Usar hooks apenas em componentes funcionais ou em hooks customizados
 * Usar apenas na raiz do componente ou outro hook
+
+## useEffect
+
+Um hook que aciona uma função, passada como parametro, que é acionada APÓS a PRIMEIRA renderização do componente e toda vez que tiver uma atualização de estado, useeffect será executado, após a renderização do DOM.
+Quando é passado um array vazio, qualquer atualização do state faz com que o componente será renderizado mais uma vez, enquanto que se o array é preenchido, significa que o componente só irá renderizar novamente, quando o(s) estado(s) no array mudarem.
+
+````
+ useEffect(()=>{
+    fetch('{url}')
+    .then( 
+      response => response.json()
+    )
+    .then( json => {
+      ...
+      }
+      setIngredientsState(ingredientsArray);
+    })
+  }, [ingredients]);
+````
