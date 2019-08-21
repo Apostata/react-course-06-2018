@@ -90,4 +90,39 @@ Quando é passado um array vazio, qualquer atualização do state faz com que o 
 ````
 
 ## useCallback
-Quando usa o hook useEffect, é necessário passar as dependências usadas nele, como um método ou propriedade. Com o useCallback, guarda a função passada na memória, impedindo que quando o componente pai é rerrenderizado, ele crie uma nova instancia do método, assim rodando uma unica vez o método que é dependência de outro hook.
+Quando usa o hook useEffect, é necessário passar as dependências usadas nele, como um método ou propriedade. Com o useCallback, guarda a função passada na memória, impedindo que quando o componente pai é rerrenderizado, ele crie uma nova instancia do método, assim rodando uma unica vez o método.
+
+Componente pai:
+````
+const Ingredients = () => {
+  ...
+  const filteringList = useCallback( filteredIngredients => {
+    setIngredientsState( filteredIngredients );
+  }, []);
+  ...
+
+  return (
+    <div className="App">
+      <IngredientForm  onAddIngredient={addIngredient} />
+
+      <section>
+        <Search applyFilter={filteringList}/>
+        <IngredientList ingredients={ingredientsState}  onRemoveItem={removeItem}/>
+      </section>
+    </div>
+  );
+}
+````
+
+Componente filho:
+````
+useEffect(()=>{
+    fetch({url})
+    .then( 
+      ...
+      applyFilter(ingredientsArray);
+    })
+  }, [filterState, applyFilter]);
+````
+
+**NOTA: neste caso, **
