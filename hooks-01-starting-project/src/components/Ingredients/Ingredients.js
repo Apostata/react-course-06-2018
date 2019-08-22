@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useReducer } from 'react';
+import React, { useCallback, useReducer } from 'react';
 
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
 import ErrorModal from '../UI/ErrorModal';
 import Search from './Search';
 
-const ingredientReducer = (currentIngredient, action) =>{
+const ingredientReducer = (currentIngredient, action) => {
   switch(action.type){
     case 'SET':
       return action.ingredients;
@@ -19,16 +19,31 @@ const ingredientReducer = (currentIngredient, action) =>{
     default :
       throw new Error('Should not get there!');
   }
-}
+};
+
+const uiReducer = (currentUiState, action) => { // para mostar o loader e o modal de erros
+  switch(action.type){
+    case 'SEND':
+      return { error: null, loading: true };
+    case 'RESPONSE':
+    case 'CLEAR':
+      return { error: null, loading: false };
+    case 'ERROR':
+      return { error: action.error.message, loading: false };
+    default :  
+      throw new Error('Should not get there!');
+  }
+};
 
 const Ingredients = () => {
   const [ingredientsState, dispatchIngredient ]= useReducer(ingredientReducer, []);
   // const [ingredientsState, setIngredientsState] = useState([]);
-  const [isLoadingState, setIsLoadingState] = useState(false);
-  const [errorState, setErrorState] = useState(null);
+  const [uiState, dispatchUi ]= useReducer(uiReducer, { loading: false, error: null });
+  // const [isLoadingState, setIsLoadingState] = useState(false);
+  // const [errorState, setErrorState] = useState(null);
  
   const addIngredient = ingredient => {
-    setIsLoadingState(true);
+    dispatchUi({type:'SEND'});
     fetch('https://react-hooks-update-d4774.firebaseio.com/ingredients.json', {
       method: 'POST',
       body: JSON.stringify(ingredient),
@@ -44,35 +59,34 @@ const Ingredients = () => {
           //   { id: json.name, ...ingredient }
           // ]);
           dispatchIngredient({type:'ADD', ingredient:{ id: json.name, ...ingredient }})
-          setIsLoadingState(false);
+          dispatchUi({type:'RESPONSE'});
         }
       )
       .catch(error =>{
-        setErrorState(error.message);
+        dispatchUi({type:'ERROR', error});
       })
     )   
   };
 
   const removeItem = id => {
-    setIsLoadingState(true);
+    dispatchUi({type:'SEND'});
     fetch(`https://react-hooks-update-d4774.firebaseio.com/ingredients/${id}.json`, {
       method: 'DELETE'
     })
     .then(()=> {
-      setIsLoadingState(false);
+      dispatchUi({type:'RESPONSE'});
       // setIngredientsState( 
       //   prevIngredients => prevIngredients.filter(igredient => igredient.id !== id)
       // );
       dispatchIngredient({type:'REMOVE', id});
     })
     .catch(error =>{
-      setErrorState(error.message);
+      dispatchUi({type:'ERROR', error});
     })
   };
 
   const colseModal = () => {
-    setErrorState(null);
-    setIsLoadingState(false);
+    dispatchUi({type:'CLEAR'});
   };
 
   const filteringList = useCallback( filteredIngredients => {
@@ -82,8 +96,8 @@ const Ingredients = () => {
 
   return (
     <div className="App">
-      { errorState && <ErrorModal onClose={colseModal} >{errorState}</ErrorModal> }
-      <IngredientForm  onAddIngredient={addIngredient} loading={isLoadingState} />
+      { uiState.error && <ErrorModal onClose={colseModal} >{uiState.error}</ErrorModal> }
+      <IngredientForm  onAddIngredient={addIngredient} loading={uiState.loading} />
       <section>
         <Search applyFilter={filteringList}/>
         <IngredientList ingredients={ingredientsState}  onRemoveItem={removeItem} />
