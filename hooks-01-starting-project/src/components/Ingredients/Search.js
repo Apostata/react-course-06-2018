@@ -9,7 +9,7 @@ const Search = React.memo(props => {
   const inputRef = useRef();
 
   useEffect(()=>{
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       if (filterState === inputRef.current.value){
         const query = filterState.length === 0? "" : `?orderBy="title"&equalTo="${filterState}"`;
         fetch(`https://react-hooks-update-d4774.firebaseio.com/ingredients.json${query}`)
@@ -29,7 +29,10 @@ const Search = React.memo(props => {
           applyFilter(ingredientsArray);
         })
       }
-    }, 500)
+    }, 500);
+    return () => {
+      clearTimeout(timer);
+    }
   }, [filterState, applyFilter, inputRef]);
 
   return (

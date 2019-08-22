@@ -89,6 +89,29 @@ Quando é passado um array vazio, qualquer atualização do state faz com que o 
   }, [ingredients]);
 ````
 
+### Retorno do useEffect
+useEffect pode retornar uma função. caso não tenha nenhuma dependencia, [] (array vazio), está função será rodada quando o componente desmontar, caso contrário roda antes da próxima atualização do useEffect.
+
+````
+useEffect(()=>{
+    const timer = setTimeout(() => {
+      if (filterState === inputRef.current.value){
+        const query = filterState.length === 0? "" : `?orderBy="title"&equalTo="${filterState}"`;
+        fetch(`${url}${query}`)
+        .then( json => {
+          ...
+        })
+      }
+    }, 500);
+    return () => {
+      clearTimeout(timer);
+    }
+  }, [filterState, applyFilter, inputRef]);
+
+````
+Neste caso assim que atualiza o campo, ele cancela o ultimo timer e inicia outro para otimizar a memmória. Quando ficar 500 millisegundos sem digitar, então é feita a requisição na api.
+caso não tivesse dependencias no array, a função de retorno iria rodar apenas no unmount do componente.
+
 ## useCallback
 Quando usa o hook useEffect, é necessário passar as dependências usadas nele, como um método ou propriedade. Com o useCallback, guarda a função passada na memória, impedindo que quando o componente pai é rerrenderizado, ele crie uma nova instancia do método, assim rodando uma unica vez o método.
 
@@ -126,3 +149,49 @@ useEffect(()=>{
 ````
 
 **NOTA: neste caso, **
+
+
+## useReducer
+Cria uma função muito similar aos reducers do Redux para gerenciar ações nos estados(states) de estados mais complexos (com multiplas actions).
+useReducer, recebe 2 parametros, o primeiro é a função do reducer e o segundo o estado inicial.
+quando usado com array destructuring, recebe o estado, e o dispatch para acionar as actions do reducer.
+
+exemplo da função reducer fora do componente:
+
+````
+const ingredientReducer = (currentIngredient, action) =>{
+  switch(action.type){
+    case 'SET':
+      return action.ingredients;
+    case 'ADD':
+      return [...currentIngredient, action.ingredient];
+    case 'REMOVE':
+      return currentIngredient.filter(ingredient => ingredient.id !== action.id);
+    default :
+      throw new Error('Should not get there!');
+  }
+}
+````
+
+chamando no componente:
+
+````
+const Ingredients = () => {
+  const [ingredientsState, dispatchIngredient]= useReducer(ingredientReducer, []);
+
+  const addIngredient = ingredient => {
+    setIsLoadingState(true);
+    fetch(`${url}`)
+    .then( 
+      response => response.json()
+      .then( json=> {
+          ...
+          dispatchIngredient({type:'ADD', ingredient:{ id: json.name, ...ingredient }});
+          ...
+        }
+      )
+    )   
+  };
+
+};
+````
