@@ -195,3 +195,6 @@ const Ingredients = () => {
 
 };
 ````
+
+## useContext
+Para usar com contextApi
