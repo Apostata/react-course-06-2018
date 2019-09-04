@@ -8,7 +8,7 @@ const IngredientForm = React.memo(props => {
   const [titleState, titleSetState ]=  useState('');
   const [amountState, amountSetState ]=  useState('');
   const {loading} = props;
-
+  
   const submitHandler = event => {
     event.preventDefault();
     props.onAddIngredient({

@@ -113,7 +113,7 @@ Neste caso assim que atualiza o campo, ele cancela o ultimo timer e inicia outro
 caso não tivesse dependencias no array, a função de retorno iria rodar apenas no unmount do componente.
 
 ## useCallback
-Quando usa o hook useEffect, é necessário passar as dependências usadas nele, como um método ou propriedade. Com o useCallback, guarda a função passada na memória, impedindo que quando o componente pai é rerrenderizado, ele crie uma nova instancia do método, assim rodando uma unica vez o método.
+Quando usa o hook useEffect, é necessário passar as dependências usadas nele, como um método ou propriedade. Guarda a função passada na memória, impedindo que quando o componente pai é rerrenderizado, ele crie uma nova instancia do método, assim criando uma unica vez o método.
 
 Componente pai:
 ````
@@ -155,6 +155,7 @@ useEffect(()=>{
 Cria uma função muito similar aos reducers do Redux para gerenciar ações nos estados(states) de estados mais complexos (com multiplas actions).
 useReducer, recebe 2 parametros, o primeiro é a função do reducer e o segundo o estado inicial.
 quando usado com array destructuring, recebe o estado, e o dispatch para acionar as actions do reducer.
+Com o useCallback, guarda a função passada na memória, impedindo que quando o componente pai é rerrenderizado, ele crie uma nova instancia do método, assim criando uma unica vez o método.
 
 exemplo da função reducer fora do componente:
 
@@ -197,4 +198,124 @@ const Ingredients = () => {
 ````
 
 ## useContext
-Para usar com contextApi
+Para usar com contextApi para centralizar mudanças da estado
+Criar um componente para ser o provedor do contexto:
+
+````
+import React, {useState} from 'react';
+
+export const AuthContext = React.createContext({
+    isAuth: false,
+    login: () =>{}
+});
+
+const AuthContextProvider = props => {
+    const [authState, setAuthState] = useState(false);
+    
+    const loginHandler = () => {
+        setAuthState(true)
+    };
+
+    return (
+        <AuthContext.Provider value={{ login: loginHandler, isAuth: authState }} >
+            { props.children }
+        </AuthContext.Provider>
+    );
+};
+
+export default AuthContextProvider;
+````
+
+então no componente onde será usado o contexto, ai sim será armazenado o componente com o contexto na função useContext() e usado para validar.
+
+````
+import React, { useContext } from 'react';
+
+import Ingredients from './components/Ingredients/Ingredients';
+import Auth from './components/Auth';
+import {AuthContext} from './Context/auth-context'
+
+const App = props => {
+  const authContext = useContext(AuthContext);
+  let content = authContext.isAuth? <Ingredients /> : <Auth />; 
+
+  return content;
+};
+
+export default App;
+
+````
+
+e no componente de login(neste caso), será usado o useContext() para chamar a função que irá alterar o estado do login:
+
+````
+import React, {useContext} from 'react';
+
+import Card from './UI/Card';
+import './Auth.css';
+
+import {AuthContext} from '../Context/auth-context';
+
+const Auth = props => {
+  const authContext = useContext(AuthContext);
+  
+  const loginHandler = () => {
+    authContext.login();
+  };
+
+  return (
+    <div className="auth">
+      <Card>
+        <h2>You are not authenticated!</h2>
+        <p>Please log in to continue.</p>
+        <button onClick={loginHandler}>Log In</button>
+      </Card>
+    </div>
+  );
+};
+
+export default Auth;
+
+````
+
+## useMemo
+Para melhora de performance. Guarda na memória, uma função, componente ou um side-effect, impedindo que quando o componente pai é rerrenderizado, ele crie uma nova instancia, economizando performance.
+
+no exemplo abaixo, irá economizar a performance para renderizar a lista de ingredientes, apenas quando mudar o estado dos ingredientes ou da função removeItem
+
+````
+import React, { useCallback, useReducer, useMemo } from 'react';
+...
+
+const ingredientReducer = (currentIngredient, action) => {
+  ...
+};
+
+const uiReducer = (currentUiState, action) => { // para mostar o loader e o modal de erros
+  ...
+};
+
+const Ingredients = () => {
+  ...
+
+  const ingredientList = useMemo(() =>{
+    return <IngredientList ingredients={ingredientsState}  onRemoveItem={removeItem} />
+  }, [ingredientsState, removeItem])
+
+  return (
+    <div className="App">
+      { uiState.error && <ErrorModal onClose={colseModal} >{uiState.error}</ErrorModal> }
+      <IngredientForm  onAddIngredient={addIngredient} loading={uiState.loading} />
+      <section>
+        <Search applyFilter={filteringList}/>
+        {ingredientList}
+      </section>
+    </div>
+  );
+}
+
+export default Ingredients;
+
+````
+
+## Criando um hook customizado

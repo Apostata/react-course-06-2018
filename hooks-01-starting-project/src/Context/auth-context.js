@@ -5,20 +5,18 @@ export const AuthContext = React.createContext({
     login: () =>{}
 });
 
-
 const AuthContextProvider = props => {
-
     const [authState, setAuthState] = useState(false);
-
+    
     const loginHandler = () => {
         setAuthState(true)
-    }
+    };
 
-     return (
+    return (
         <AuthContext.Provider value={{ login: loginHandler, isAuth: authState }} >
             { props.children }
         </AuthContext.Provider>
-    )
+    );
 };
 
 export default AuthContextProvider;
