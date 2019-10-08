@@ -1,35 +1,29 @@
-import React, {Fragment, Component} from 'react';
+import React, {Fragment, useState} from 'react';
 import styles from './Layout.scss';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
 import Sidedrawer from '../../components/Navigation/Sidedrawer/Sidedrawer';
 import {connect} from 'react-redux';
 
-class Layout extends Component{
-    state ={
-        toggleSidedrawer: false
+const layout = props => {
+    const [sidedrawerState, setSidedrawerState] = useState(false)
+
+    const handleToggleSidedrawer = () =>{
+        setSidedrawerState(!sidedrawerState);
     }
 
-    handleToggleSidedrawer(){
-        this.setState((prevState)=>{
-           return {toggleSidedrawer: !prevState.toggleSidedrawer}
-        });
-    }
-
-    render(){
-        return(
-            <Fragment>
-                <Toolbar isAuthenticated={this.props.isAuthenticated} toggleSidedrawer={this.handleToggleSidedrawer.bind(this)} />
-                <Sidedrawer
-                    isAuthenticated={this.props.isAuthenticated}
-                    show={this.state.toggleSidedrawer}
-                    toggleSidedrawer={this.handleToggleSidedrawer.bind(this)}
-                />
-                <main className={styles.Content}>
-                    {this.props.children}
-                </main>
-            </Fragment>
-        );
-    }
+    return(
+        <Fragment>
+            <Toolbar isAuthenticated={props.isAuthenticated} toggleSidedrawer={handleToggleSidedrawer} />
+            <Sidedrawer
+                isAuthenticated={props.isAuthenticated}
+                show={sidedrawerState}
+                toggleSidedrawer={handleToggleSidedrawer}
+            />
+            <main className={styles.Content}>
+                {props.children}
+            </main>
+        </Fragment>
+    );
 }
 
 const mapStoreStateToProps = state =>{
@@ -38,4 +32,4 @@ const mapStoreStateToProps = state =>{
     }
 }
 
-export default connect(mapStoreStateToProps)(Layout);
+export default connect(mapStoreStateToProps)(layout);

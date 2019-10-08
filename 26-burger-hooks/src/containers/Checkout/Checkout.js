@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
@@ -6,37 +6,36 @@ import ContactData from './ContactData/ContactData';
 
 import {connect} from 'react-redux';
 
-class Checkout extends Component{
+const checkout = props => {
 
-    checkoutCancelHandler(){
-        this.props.history.goBack();
+    const checkoutCancelHandler = () =>{
+       props.history.goBack();
     }
 
-    checkoutContinueHandler(){
-        this.props.history.replace(`${this.props.match.path}/contact-data`);
+    const checkoutContinueHandler =() => {
+       props.history.replace(`${props.match.path}/contact-data`);
     }
 
-    render(){
-        let summary = <Redirect to="/" />;
+    let summary = <Redirect to="/" />;
 
-        if(this.props.ingredients){
-            summary = (
-                <div>
-                    <CheckoutSummary 
-                        ingredients={this.props.ingredients}
-                        cancel={this.checkoutCancelHandler.bind(this)}
-                        continue={this.checkoutContinueHandler.bind(this)}
-                    />
-                    <Route 
-                        path={`${this.props.match.path}/contact-data`}
-                        component={ContactData} 
-                    />
-                </div>
-            );
-        }
-
-        return summary;
+    if(props.ingredients){
+        summary = (
+            <div>
+                <CheckoutSummary 
+                    ingredients={props.ingredients}
+                    cancel={checkoutCancelHandler}
+                    continue={checkoutContinueHandler}
+                />
+                <Route 
+                    path={`${props.match.path}/contact-data`}
+                    component={ContactData} 
+                />
+            </div>
+        );
     }
+
+    return summary;
+    
 };
 
 const mapStoreStateToProps = state =>{
@@ -46,4 +45,4 @@ const mapStoreStateToProps = state =>{
 };
 
 
-export default connect(mapStoreStateToProps)(Checkout);
+export default connect(mapStoreStateToProps)(checkout);

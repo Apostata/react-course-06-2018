@@ -16,13 +16,15 @@ const Logout = React.lazy(()=>import('./containers/Auth/Logout/Logout'));
 
 
 const app = props => {
+  const { checkAuthState } = props;
+  
   useEffect(() =>{
-    props.checkAuthState();
-  },[]);
+    checkAuthState();
+  },[checkAuthState]);
 
   let routes =(
     <Switch>
-      <Route path="/auth" render={()=><Auth/>} />
+      <Route path="/auth" render={(props)=> <Auth {...props} />} />
       <Route path="/" exact component={BurgerBuilder} />
       <Redirect to="/" />
     </Switch>
@@ -31,10 +33,10 @@ const app = props => {
   if(props.isAuthenticated){
     routes = (
       <Switch>
-        <Route path="/checkout" render={()=><Checkout/>} />
-        <Route path="/orders" render={()=><Orders/>} />
-        <Route path="/logout"  component={Logout} />
-        <Route path="/auth"  render={()=><Auth/>} /> {/*--- É necessário manter essa rota para que após logado ele redirecione para checkout ---*/}
+        <Route path="/checkout" render={(props)=> <Checkout {...props} />} />
+        <Route path="/orders" render={(props)=> <Orders {...props} />} />
+        <Route path="/logout"  render={(props)=> <Logout {...props} />} />
+        <Route path="/auth"  render={(props)=> <Auth {...props} />} /> {/*--- É necessário manter essa rota para que após logado ele redirecione para checkout ---*/}
         <Route path="/" exact component={BurgerBuilder} />
         <Redirect to="/" />
       </Switch>

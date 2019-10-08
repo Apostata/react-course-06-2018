@@ -16,7 +16,8 @@ import {watchAuth, watchBurgerBuilder, watchOrder} from './store/sagas';
 
 import registerServiceWorker from './registerServiceWorker';
 
-const composeEnhancers = process.env.NODE_env = 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null|| compose;
+const composeEnhancers =  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__  || compose;
+// const composeEnhancers = compose;
 
 const rootReducer = combineReducers({
     burger: burgerBuilderReducer,

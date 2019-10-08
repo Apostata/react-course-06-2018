@@ -4,7 +4,8 @@ import NavigationItems from '../NavigationItems/NavigationItems';
 import styles from './Sidedrawer.scss';
 import Backdrop from '../../UI/Backdrop/Backdrop';
 
-const sidedrawer = (props) =>{
+const sidedrawer = props =>{
+    console.log(props);
     return (
         <Fragment>
             <Backdrop show={props.show} click={props.toggleSidedrawer} />
